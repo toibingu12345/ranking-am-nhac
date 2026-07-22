@@ -284,3 +284,12 @@ a:hover {
 a:visited {
   color: #6600FF;
 }
+
+.middle-box img,
+.result.image img,
+td img {
+  width: 150px !important;
+  height: 150px !important;
+  object-fit: cover !important;
+  border-radius: 16px !important;
+}
