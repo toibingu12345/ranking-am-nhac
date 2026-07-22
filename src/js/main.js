@@ -50,88 +50,37 @@ let pointerPrev         = 0;
 let finalCharacters = [];
 let loading         = false;
 let totalBattles    = 0;
-let sorterURL       = window.location.host + window.location.pathname;
-let storedSaveType  = localStorage.getItem(`${sorterURL}_saveType`);
 
 /** Initialize script. */
 function init() {
 
   /** Define button behavior. */
   document.querySelector('.starting.start.button').addEventListener('click', start);
-  document.querySelector('.starting.load.button').addEventListener('click', loadProgress);
 
   document.querySelector('.left.sort.image').addEventListener('click', () => pick('left'));
   document.querySelector('.right.sort.image').addEventListener('click', () => pick('right'));
   
   document.querySelector('.sorting.tie.button').addEventListener('click', () => pick('tie'));
   document.querySelector('.sorting.undo.button').addEventListener('click', undo);
-  document.querySelector('.sorting.save.button').addEventListener('click', () => saveProgress('Progress'));
   
-  document.querySelector('.finished.save.button').addEventListener('click', () => saveProgress('Last Result'));
   document.querySelector('.finished.getimg.button').addEventListener('click', generateImage);
   document.querySelector('.finished.list.button').addEventListener('click', generateTextList);
-
-  document.querySelector('.clearsave').addEventListener('click', clearProgress);
 
   /** Define keyboard controls (up/down/left/right vimlike k/j/h/l). */
   document.addEventListener('keypress', (ev) => {
     /** If sorting is in progress. */
     if (timestamp && !timeTaken && !loading && choices.length === battleNo - 1) {
       switch(ev.key) {
-        case 's': case '3':                   saveProgress('Progress'); break;
-        case 'h': case 'ArrowLeft':           pick('left'); break;
-        case 'l': case 'ArrowRight':          pick('right'); break;
-        case 'k': case '1': case 'ArrowUp':   pick('tie'); break;
-        case 'j': case '2': case 'ArrowDown': undo(); break;
-        default: break;
-      }
-    }
-    /** If sorting has ended. */
-    else if (timeTaken && choices.length === battleNo - 1) {
-      switch(ev.key) {
-        case 'k': case '1': saveProgress('Last Result'); break;
-        case 'j': case '2': generateImage(); break;
-        case 's': case '3': generateTextList(); break;
-        default: break;
-      }
-    } else { // If sorting hasn't started yet.
-      switch(ev.key) {
-        case '1': case 's': case 'Enter': start(); break;
-        case '2': case 'l':               loadProgress(); break;
+        case 'h': case 'ArrowLeft':  pick('left'); break;
+        case 'l': case 'ArrowRight': pick('right'); break;
+        case 'k': case 'ArrowUp':    pick('tie'); break;
+        case 'j': case 'ArrowDown':  undo(); break;
         default: break;
       }
     }
   });
-
-  document.querySelector('.image.selector').insertAdjacentElement('beforeend', document.createElement('select'));
-
-  /** Initialize image quantity selector for results. */
-  for (let i = 0; i <= 10; i++) {
-    const select = document.createElement('option');
-    select.value = i;
-    select.text = i;
-    if (i === 3) { select.selected = 'selected'; }
-    document.querySelector('.image.selector > select').insertAdjacentElement('beforeend', select);
-  }
-
-  document.querySelector('.image.selector > select').addEventListener('input', (e) => {
-    const imageNum = e.target.options[e.target.selectedIndex].value;
-    result(Number(imageNum));
-  });
-
-  /** Show load button if save data exists. */
-  if (storedSaveType) {
-    document.querySelector('.starting.load.button > span').insertAdjacentText('beforeend', storedSaveType);
-    document.querySelectorAll('.starting.button').forEach(el => {
-      el.style['grid-row'] = 'span 3';
-      el.style.display = 'block';
-    });
-  }
 
   setLatestDataset();
-
-  /** Decode query string if available. */
-  if (window.location.search.slice(1) !== '') decodeQuery();
 }
 
 /** Begin sorting. */
@@ -251,8 +200,8 @@ function start() {
     }
   }
 
-  leftIndex  = sortedIndexList.length - 2;    // Start with the second last value and...
-  rightIndex = sortedIndexList.length - 1;    // the last value in the sorted list and work our way down to index 0.
+  leftIndex   = sortedIndexList.length - 2;    // Start with the second last value and...
+  rightIndex  = sortedIndexList.length - 1;    // the last value in the sorted list and work our way down to index 0.
 
   leftInnerIndex  = 0;                        // Inner indexes, because we'll be comparing the left array
   rightInnerIndex = 0;                        // to the right array, in order to merge them into one sorted array.
@@ -292,8 +241,6 @@ function display() {
   document.querySelector('.left.sort.image').src = leftChar.img;
   document.querySelector('.right.sort.image').src = rightChar.img;
 
-  
-
   document.querySelector('.left.sort.text').innerHTML = charNameDisp(leftChar.name);
   document.querySelector('.right.sort.text').innerHTML = charNameDisp(rightChar.name);
 
@@ -305,7 +252,7 @@ function display() {
       case 2: pick('tie'); break;
       default: break;
     }
-  } else { saveProgress('Autosave'); }
+  }
 }
 
 /**
@@ -465,12 +412,9 @@ function progressBar(indicator, percentage) {
 
 /**
  * Shows the result of the sorter.
- * 
- * @param {number} [imageNum=3] Number of images to display. Defaults to 3.
  */
-function result(imageNum = 3) {
+function result() {
   document.querySelectorAll('.finished.button').forEach(el => el.style.display = 'block');
-  document.querySelector('.image.selector').style.display = 'block';
   document.querySelector('.time.taken').style.display = 'block';
   
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
@@ -479,21 +423,15 @@ function result(imageNum = 3) {
   document.querySelector('.info').style.display = 'none';
 
   const header = '<div class="result head"><div class="left">Order</div><div class="right">Name</div></div>';
-  const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}. <a href="${location.protocol}//${sorterURL}">Do another sorter?</a>`;
+  const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}.`;
   const imgRes = (char, num) => {
     const charName = reduceTextWidth(char.name, 'Arial 12px', 160);
     const charTooltip = char.name !== charName ? char.name : '';
     return `<div class="result image"><div class="left"><span>${num}</span></div><div class="right"><img src="${char.img}"><div><span title="${charTooltip}">${charName}</span></div></div></div>`;
   }
-  const res = (char, num) => {
-    const charName = reduceTextWidth(char.name, 'Arial 12px', 160);
-    const charTooltip = char.name !== charName ? char.name : '';
-    return `<div class="result"><div class="left">${num}</div><div class="right"><span title="${charTooltip}">${charName}</span></div></div>`;
-  }
 
   let rankNum       = 1;
   let tiedRankNum   = 1;
-  let imageDisplay  = imageNum;
 
   const finalSortedIndexes = sortedIndexList[0].slice(0);
   const resultTable = document.querySelector('.results');
@@ -505,11 +443,7 @@ function result(imageNum = 3) {
   characterDataToSort.forEach((val, idx) => {
     const characterIndex = finalSortedIndexes[idx];
     const character = characterDataToSort[characterIndex];
-    if (imageDisplay-- > 0) {
-      resultTable.insertAdjacentHTML('beforeend', imgRes(character, rankNum));
-    } else {
-      resultTable.insertAdjacentHTML('beforeend', res(character, rankNum));
-    }
+    resultTable.insertAdjacentHTML('beforeend', imgRes(character, rankNum));
     finalCharacters.push({ rank: rankNum, name: character.name });
 
     if (idx < characterDataToSort.length - 1) {
@@ -545,48 +479,6 @@ function undo() {
   display();
 }
 
-/** 
- * Save progress to local browser storage.
- * 
- * @param {'Autosave'|'Progress'|'Last Result'} saveType
-*/
-function saveProgress(saveType) {
-  const saveData = generateSavedata();
-
-  localStorage.setItem(`${sorterURL}_saveData`, saveData);
-  localStorage.setItem(`${sorterURL}_saveType`, saveType);
-
-  if (saveType !== 'Autosave') {
-    const saveURL = `${location.protocol}//${sorterURL}?${saveData}`;
-    const inProgressText = 'You may click Load Progress after this to resume, or use this URL.';
-    const finishedText = 'You may use this URL to share this result, or click Load Last Result to view it again.';
-
-    window.prompt(saveType === 'Last Result' ? finishedText : inProgressText, saveURL);
-  }
-}
-
-/**
- * Load progress from local browser storage.
-*/
-function loadProgress() {
-  const saveData = localStorage.getItem(`${sorterURL}_saveData`);
-
-  if (saveData) decodeQuery(saveData);
-}
-
-/** 
- * Clear progress from local browser storage.
-*/
-function clearProgress() {
-  storedSaveType = '';
-
-  localStorage.removeItem(`${sorterURL}_saveData`);
-  localStorage.removeItem(`${sorterURL}_saveType`);
-
-  document.querySelectorAll('.starting.start.button').forEach(el => el.style['grid-row'] = 'span 6');
-  document.querySelectorAll('.starting.load.button').forEach(el => el.style.display = 'none');
-}
-
 function generateImage() {
   const timeFinished = timestamp + timeTaken;
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
@@ -618,11 +510,6 @@ function generateTextList() {
   }, '');
   const oWindow = window.open("", "", "height=640,width=480");
   oWindow.document.write(data);
-}
-
-function generateSavedata() {
-  const saveData = `${timeError?'|':''}${timestamp}|${timeTaken}|${choices}|${optStr}${suboptStr}`;
-  return LZString.compressToEncodedURIComponent(saveData);
 }
 
 /** Retrieve latest character data and options from dataset. */
@@ -679,84 +566,6 @@ function populateOptions() {
       optList.insertAdjacentHTML('beforeend', optInsert(opt.name, opt.key, opt.tooltip, opt.checked));
     }
   });
-}
-
-/**
- * Decodes compressed shareable link query string.
- * @param {string} queryString
- */
-function decodeQuery(queryString = window.location.search.slice(1)) {
-  let successfulLoad;
-
-  try {
-    /** 
-     * Retrieve data from compressed string. 
-     * @type {string[]}
-     */
-    const decoded = LZString.decompressFromEncodedURIComponent(queryString).split('|');
-    if (!decoded[0]) {
-      decoded.splice(0, 1);
-      timeError = true;
-    }
-
-    timestamp = Number(decoded.splice(0, 1)[0]);
-    timeTaken = Number(decoded.splice(0, 1)[0]);
-    choices   = decoded.splice(0, 1)[0];
-
-    const optDecoded    = decoded.splice(0, 1)[0];
-    const suboptDecoded = decoded.slice(0);
-
-    /** 
-     * Get latest data set version from before the timestamp.
-     * If timestamp is before or after any of the datasets, get the closest one.
-     * If timestamp is between any of the datasets, get the one in the past, but if timeError is set, get the one in the future.
-     */
-    const seedDate = { str: timestamp, val: new Date(timestamp) };
-    const dateMap = Object.keys(dataSet)
-      .map(date => {
-        return { str: date, val: new Date(date) };
-      })
-    const beforeDateIndex = dateMap
-      .reduce((prevIndex, currDate, currIndex) => {
-        return currDate.val < seedDate.val ? currIndex : prevIndex;
-      }, -1);
-    const afterDateIndex = dateMap.findIndex(date => date.val > seedDate.val);
-    
-    if (beforeDateIndex === -1) {
-      currentVersion = dateMap[afterDateIndex].str;
-    } else if (afterDateIndex === -1) {
-      currentVersion = dateMap[beforeDateIndex].str;
-    } else {
-      currentVersion = dateMap[timeError ? afterDateIndex : beforeDateIndex].str;
-    }
-
-    options = dataSet[currentVersion].options;
-    characterData = dataSet[currentVersion].characterData;
-
-    /** Populate option list and decode options selected. */
-    populateOptions();
-
-    let suboptDecodedIndex = 0;
-    options.forEach((opt, index) => {
-      if ('sub' in opt) {
-        const optIsTrue = optDecoded[index] === '1';
-        document.getElementById(`cbgroup-${opt.key}`).checked = optIsTrue;
-        opt.sub.forEach((subopt, subindex) => {
-          const subIsTrue = optIsTrue ? suboptDecoded[suboptDecodedIndex][subindex] === '1' : true;
-          document.getElementById(`cb-${opt.key}-${subindex}`).checked = subIsTrue;
-          document.getElementById(`cb-${opt.key}-${subindex}`).disabled = optIsTrue;
-        });
-        suboptDecodedIndex = suboptDecodedIndex + optIsTrue ? 1 : 0;
-      } else { document.getElementById(`cb-${opt.key}`).checked = optDecoded[index] === '1'; }
-    });
-
-    successfulLoad = true;
-  } catch (err) {
-    console.error(`Error loading shareable link: ${err}`);
-    setLatestDataset(); // Restore to default function if loading link does not work.
-  }
-
-  if (successfulLoad) { start(); }
 }
 
 /** 
