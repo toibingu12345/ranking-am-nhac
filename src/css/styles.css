@@ -286,10 +286,17 @@ a:visited {
 }
 
 .middle-box img,
+.middle-box td img,
 .result.image img,
 td img {
   width: 150px !important;
   height: 150px !important;
   object-fit: cover !important;
   border-radius: 16px !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+.middle-box td {
+  height: auto !important;
 }
