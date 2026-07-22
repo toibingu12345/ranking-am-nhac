@@ -10,19 +10,20 @@ body {
   margin-top: 1em;
 }
 
-/* --- THANH TIẾN TRÌNH (GIỮ NGUYÊN KHỎANG TRỐNG, KHÔNG LÀM XÔ BỐ CỤC) --- */
+/* --- THANH TIẾN TRÌNH (GIỮ NGUYÊN VỊ TRÍ LAYOUT KHÔNG BỊ TRÔI) --- */
 .progress {
   margin: 1em auto;
   width: 500px;
-  height: 26px; /* Giữ cố định chiều cao */
-  visibility: hidden; /* Mặc định ẩn nhưng VẪN GIỮ NGUYÊN VỊ TRÍ, không xô lệch bên dưới */
-  display: block !important; 
+  height: 26px; /* Cố định chiều cao sẵn để giữ vị trí */
+  display: block !important; /* Luôn chiếm diện tích */
+  visibility: hidden; /* Ẩn đi khi chưa chạy mà không làm trôi layout */
 }
 
-/* Khi JavaScript kích hoạt hiện progress bar */
-.progress[style*="display: block"],
-.progress[style*="display: inline"] {
-  visibility: visible !important;
+/* Khi JS thêm style display hoặc chạy progress thì hiện lên */
+.progress[style*="display: block"], 
+.progress[style*="display: flex"],
+.progress.active {
+  visibility: visible;
 }
 
 .progressbar {
@@ -63,7 +64,7 @@ body {
   background-color: #4ade80; 
 }
 
-/* --- BẢNG BÌNH CHỌN (KHUNG CỐ ĐỊNH PHÙ HỢP CẢ LÚC CHƯA BẮT ĐẦU VÀ ĐANG CHƠI) --- */
+/* --- BẢNG BÌNH CHỌN (SORTER) --- */
 .sorter {
   margin: 0px auto;
   display: grid;
@@ -75,14 +76,14 @@ body {
   align-items: center;
 }
 
-/* FIX NÚT CÂN BẰNG & KHÔNG BỊ THỌT XUỐNG */
+/* NÚT BẤM CÂN BẰNG */
 .button {
   border: none;
   border-radius: 8px;
   text-align: center;
   width: 100px;
   height: 100px;
-  padding: 10px;
+  padding: 0;
   grid-column: 2 / 3;
   cursor: pointer;
   display: flex !important;
@@ -90,9 +91,8 @@ body {
   justify-content: center;
   transition: background-color 0.2s ease;
   box-sizing: border-box;
-  font-size: 1em;
+  font-size: 1.05em;
   font-weight: 500;
-  line-height: 1.2em;
   /* MÀU SẮC: Nền & Chữ nút bấm */
   background-color: #2b3a4a; 
   color: #ffffff; 
@@ -103,14 +103,8 @@ body {
   background-color: #3b4d61; 
 }
 
-/* Căn chỉnh nút Bắt đầu lúc chưa chơi */
+.sorting.button:nth-of-type(1), 
 .starting.start.button {
-  grid-row: 1 / 7 !important;
-  height: 220px;
-}
-
-/* Phân chia 2 nút đều đặn theo chiều dọc khi đang chơi */
-.sorting.button:nth-of-type(1) {
   grid-row: 1 / 4 !important;
   margin-bottom: 10px;
 }
@@ -121,7 +115,6 @@ body {
   margin-top: 10px;
 }
 
-/* Ẩn nút Save Progress và các nút thừa */
 .save.button, 
 .button:nth-child(3),
 .finished.button,
@@ -146,7 +139,7 @@ body {
   border-radius: 8px;
 }
 
-/* --- TÊN BÀI HÁT --- */
+/* --- TÊN BÀI HÁT (TO HƠN NỮA & DÁN SÁT ẢNH) --- */
 .sorter > .text {
   width: 220px;
   height: auto;
@@ -154,12 +147,12 @@ body {
 }
 
 .sorter > .text > p {
-  margin: 8px 0 0 0;
+  margin: 3px 0 0 0; /* Dán rất sát mép dưới của ảnh */
   width: 220px;
   text-align: center;
-  font-size: 1.15em;
+  font-size: 1.3em; /* Tăng cỡ chữ to hơn nữa */
   font-weight: bold;
-  line-height: 1.3em;
+  line-height: 1.25em;
   word-wrap: break-word;
   overflow: visible;
   white-space: normal;
@@ -206,13 +199,11 @@ body {
 
 label {
   cursor: pointer;
-  /* MÀU SẮC: Màu chữ label */
-  color: #ffffff; 
 }
 
-/* FIX: Rê chuột vào vẫn GIỮ NGUYÊN MÀU TRẮNG, không bị biến thành màu đỏ */
+/* BỎ HIỆU ỨNG CHỮ HÓA ĐỎ KHỦNG KHIẾP KHI RÊ CHUỘT VÀO CHECKBOX */
 label:hover {
-  /* MÀU SẮC: Giữ màu chữ trắng khi di chuột qua */
+  /* MÀU SẮC: Giữ màu khi rê chuột (ở đây giữ màu trắng nguyên bản) */
   color: #ffffff; 
 }
 
@@ -224,7 +215,6 @@ label:hover {
   width: 100%;
 }
 
-/* KHOẢNG CÁCH ĐƯỜNG KẺ TRẮNG */
 .options > hr {
   grid-column: span 3;
   width: 100%;
@@ -317,7 +307,6 @@ label:hover {
   text-align: center;
 }
 
-/* --- THÔNG TIN CHÚ THÍCH Ở ĐÁY --- */
 .info {
   margin: 0.5em auto 2em auto;
   display: block;
