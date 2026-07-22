@@ -111,9 +111,11 @@ body {
 }
 
 .sorter > .image {
-  width: 120px;
+  width: 180px;
   height: 180px;
-  margin: auto;
+  margin: 2px;
+  object-fit: cover;
+  border-radius: 10px;
   grid-row: 1 / 7;
   cursor: pointer;
 }
@@ -283,20 +285,4 @@ a:hover {
 
 a:visited {
   color: #6600FF;
-}
-
-.middle-box img,
-.middle-box td img,
-.result.image img,
-td img {
-  width: 150px !important;
-  height: 150px !important;
-  object-fit: cover !important;
-  border-radius: 16px !important;
-  display: block !important;
-  margin: 0 auto !important;
-}
-
-.middle-box td {
-  height: auto !important;
 }
