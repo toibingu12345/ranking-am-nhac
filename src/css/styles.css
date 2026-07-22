@@ -10,66 +10,89 @@ body {
   margin-top: 1em;
 }
 
+/* --- THANH TIẾN TRÌNH (GIỮ NGUYÊN KHỎANG TRỐNG, KHÔNG LÀM XÔ BỐ CỤC) --- */
 .progress {
   margin: 1em auto;
   width: 500px;
-  display: none;
+  height: 26px; /* Giữ cố định chiều cao */
+  visibility: hidden; /* Mặc định ẩn nhưng VẪN GIỮ NGUYÊN VỊ TRÍ, không xô lệch bên dưới */
+  display: block !important; 
+}
+
+/* Khi JavaScript kích hoạt hiện progress bar */
+.progress[style*="display: block"],
+.progress[style*="display: inline"] {
+  visibility: visible !important;
 }
 
 .progressbar {
   position: relative;
-  width: 492px;
-  padding: 3px;
-  margin: 2px 0px;
+  width: 500px;
+  height: 26px;
+  padding: 0; 
+  margin: 0;
   border: none;
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
   /* MÀU SẮC: Nền thanh progress */
   background-color: #1e293b; 
 }
 
 .progresstext {
   position: absolute;
-  width: 492px;
-  margin: 3px 0px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  margin: 0;
   text-align: center;
-  font-size: 0.7em;
+  font-size: 0.75em;
+  z-index: 2;
+  pointer-events: none;
   /* MÀU SẮC: Chữ phần trăm % */
   color: #ffffff; 
 }
 
 .progressfill {
-  height: 20px;
+  height: 100%;
   width: 0%;
-  border-radius: 6px;
+  border-radius: 8px;
   /* MÀU SẮC: Thanh phần trăm chạy */
   background-color: #4ade80; 
 }
 
+/* --- BẢNG BÌNH CHỌN (KHUNG CỐ ĐỊNH PHÙ HỢP CẢ LÚC CHƯA BẮT ĐẦU VÀ ĐANG CHƠI) --- */
 .sorter {
   margin: 0px auto;
   display: grid;
-  grid-template-columns: 220px 95px 220px;
-  grid-gap: 30px; 
-  width: 595px;
+  grid-template-columns: 220px 100px 220px;
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 0 25px; 
+  width: 565px;
+  height: 220px;
+  align-items: center;
 }
 
+/* FIX NÚT CÂN BẰNG & KHÔNG BỊ THỌT XUỐNG */
 .button {
   border: none;
   border-radius: 8px;
   text-align: center;
-  width: 95px;
-  height: 95px;
-  padding: 0;
+  width: 100px;
+  height: 100px;
+  padding: 10px;
   grid-column: 2 / 3;
   cursor: pointer;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
   box-sizing: border-box;
   font-size: 1em;
   font-weight: 500;
+  line-height: 1.2em;
   /* MÀU SẮC: Nền & Chữ nút bấm */
   background-color: #2b3a4a; 
   color: #ffffff; 
@@ -80,66 +103,36 @@ body {
   background-color: #3b4d61; 
 }
 
+/* Căn chỉnh nút Bắt đầu lúc chưa chơi */
 .starting.start.button {
-  grid-row: span 6;
+  grid-row: 1 / 7 !important;
   height: 220px;
 }
 
+/* Phân chia 2 nút đều đặn theo chiều dọc khi đang chơi */
+.sorting.button:nth-of-type(1) {
+  grid-row: 1 / 4 !important;
+  margin-bottom: 10px;
+}
+
+.sorting.button:nth-of-type(2),
 .starting.load.button {
-  grid-row: span 3;
-  display: none;
+  grid-row: 4 / 7 !important;
+  margin-top: 10px;
 }
 
-.sorting.button, .finished.button {
-  grid-row: span 3;
-  display: none;
-}
-
-/* Ẩn hoàn toàn nút Save Progress */
+/* Ẩn nút Save Progress và các nút thừa */
 .save.button, 
-.button:nth-child(3) {
-  display: none !important;
-}
-
+.button:nth-child(3),
+.finished.button,
 .loading.button {
-  grid-row: span 6;
-  display: none;
-}
-
-.loading.button > div {
-  width: 25px;
-  height: 25px;
-  margin: 50px auto;
-  /* MÀU SẮC: Vòng xoay loading */
-  background-color: #ffffff; 
-  border-radius: 100%;  
-  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
-  animation: sk-scaleout 1.0s infinite ease-in-out;
-}
-
-@-webkit-keyframes sk-scaleout {
-  0% { -webkit-transform: scale(0) }
-  100% {
-    -webkit-transform: scale(1.0);
-    opacity: 0;
-  }
-}
-
-@keyframes sk-scaleout {
-  0% { 
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  } 100% {
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-    opacity: 0;
-  }
+  display: none !important;
 }
 
 .sorter > .image {
   width: 220px;
   height: 220px;
-  margin: 0 auto;
+  margin: 0;
   grid-row: 1 / 7;
   cursor: pointer;
   border-radius: 8px;
@@ -153,21 +146,22 @@ body {
   border-radius: 8px;
 }
 
+/* --- TÊN BÀI HÁT --- */
 .sorter > .text {
   width: 220px;
   height: auto;
-  display: none;
+  display: block !important;
 }
 
 .sorter > .text > p {
-  margin: 6px 0 0 0;
+  margin: 8px 0 0 0;
   width: 220px;
   text-align: center;
-  font-size: 1em;
-  line-height: 1.35em;
+  font-size: 1.15em;
+  font-weight: bold;
+  line-height: 1.3em;
   word-wrap: break-word;
   overflow: visible;
-  text-overflow: clip;
   white-space: normal;
   /* MÀU SẮC: Chữ tên bài hát */
   color: #ffffff; 
@@ -183,13 +177,14 @@ body {
   border: none;
 }
 
+/* --- CHECKBOX / OPTIONS --- */
 .options {
-  margin: 1.5em auto;
+  margin: 3.5em auto 0 auto;
   display: grid;
   text-align: left;
   grid-template-columns: repeat(3, auto);
   justify-content: center;
-  grid-gap: 20px;
+  grid-gap: 15px 25px;
   width: 100%;
   max-width: 600px;
 }
@@ -211,11 +206,14 @@ body {
 
 label {
   cursor: pointer;
+  /* MÀU SẮC: Màu chữ label */
+  color: #ffffff; 
 }
 
+/* FIX: Rê chuột vào vẫn GIỮ NGUYÊN MÀU TRẮNG, không bị biến thành màu đỏ */
 label:hover {
-  /* MÀU SẮC: Chữ option khi di chuột qua */
-  color: #ff8888; 
+  /* MÀU SẮC: Giữ màu chữ trắng khi di chuột qua */
+  color: #ffffff; 
 }
 
 .options > .large.option {
@@ -226,10 +224,11 @@ label:hover {
   width: 100%;
 }
 
+/* KHOẢNG CÁCH ĐƯỜNG KẺ TRẮNG */
 .options > hr {
   grid-column: span 3;
   width: 100%;
-  margin: 1.5em 0;
+  margin: 1.2em 0 0.8em 0;
   border: none;
   /* MÀU SẮC: Đường gạch ngang phân cách */
   border-top: 1px solid #ffffff; 
@@ -318,8 +317,9 @@ label:hover {
   text-align: center;
 }
 
+/* --- THÔNG TIN CHÚ THÍCH Ở ĐÁY --- */
 .info {
-  margin: 0 auto 1.5em auto;
+  margin: 0.5em auto 2em auto;
   display: block;
   text-align: center;
   font-size: 0.85em;
