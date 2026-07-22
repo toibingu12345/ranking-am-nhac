@@ -41,17 +41,29 @@ body {
 .sorter {
   margin: 0px auto;
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
-  grid-gap: 5px;
-  width: 420px;
+  grid-template-columns: 180px 1fr 180px; /* Điều chỉnh lại khung chứa vừa vặn ảnh 180px */
+  grid-gap: 10px;
+  width: 540px; /* Mở rộng độ rộng chung cho cân đối với ảnh 180px */
 }
 
+/* --- TÙY CHỈNH NÚT BẤM (BUTTONS) --- */
 .button {
-  border: 1px solid black;
+  border: none; /* Bỏ viền đen */
+  background-color: #2b3a4a; /* Màu nền fill dạng phẳng, hiện đại */
+  color: #ffffff; /* Chữ trắng rõ ràng */
+  border-radius: 8px; /* Bo góc nhẹ */
   text-align: center;
-  padding: 10%;
+  padding: 12px 8px;
   grid-column: 2 / 3;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #3b4d61; /* Hiệu ứng đổi màu nhẹ khi hover */
 }
 
 .starting.start.button {
@@ -77,7 +89,7 @@ body {
   width: 25px;
   height: 25px;
   margin: 50px auto;
-  background-color: #333;
+  background-color: #fff;
 
   border-radius: 100%;  
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
@@ -110,36 +122,49 @@ body {
   }
 }
 
+/* --- TÙY CHỈNH HÌNH ẢNH HÌNH VUÔNG 180PX & BO GÓC --- */
 .sorter > .image {
-  width: 120px;
+  width: 180px;
   height: 180px;
   margin: auto;
   grid-row: 1 / 7;
   cursor: pointer;
+  border-radius: 8px; /* Bo góc nhẹ */
+  overflow: hidden;   /* Bo tròn viền cho cả ảnh bên trong */
 }
 
+.sorter > .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* --- TÙY CHỈNH HIỂN THỊ TÊN BÀI HÁT (TEXT) --- */
 .sorter > .text {
-  width: 120px;
-  height: 60px;
+  width: 100%;
+  height: auto; /* Để chiều cao tự động theo nội dung chữ */
   display: none;
 }
 
 .sorter > .text > p {
-  margin: 0.5em 5px 0px;
-  width: calc(100%-10px);
+  margin: 8px 0 0 0;
+  width: 100%;
   text-align: center;
-  font-size: 0.8em;
-  line-height: 1.5em;
+  font-size: 0.85em;
+  line-height: 1.4em;
+  word-wrap: break-word; /* Đảm bảo tên dài tự xuống dòng không bị mất chữ */
 }
 
+/* --- BỎ VIỀN ĐEN BÊN NGOÀI BỐ CỤC KHUNG TRÁI / PHẢI --- */
 .sorter > .left {
   grid-column: 1 / 2;
-  border: 1px solid #000000;
+  border: none; /* Bỏ viền đen */
 }
 
 .sorter > .right {
   grid-column: 3 / 4;
-  border: 1px solid #000000;
+  border: none; /* Bỏ viền đen */
 }
 
 .options {
