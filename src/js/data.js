@@ -20,4 +20,4 @@ let dataSetVersion = '';
 /**
  * Image root, will be appended to the start of every image URL.
  */
-const imageRoot = '';
+const imageRoot = 'https://toibingu12345.github.io/ranking-am-nhac/src/assets/bia-album/';
