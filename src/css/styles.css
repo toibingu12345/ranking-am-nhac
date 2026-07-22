@@ -10,6 +10,7 @@ body {
   margin-top: 1em;
 }
 
+/* --- THANH TIẾN TRÌNH (PROGRESS BAR) --- */
 .progress {
   margin: 1em auto;
   width: 500px;
@@ -19,9 +20,14 @@ body {
 .progressbar {
   position: relative;
   width: 492px;
-  border: 1px solid black;
   padding: 3px;
   margin: 2px 0px;
+  border: none;             /* Bỏ viền đen */
+  border-radius: 8px;       /* Bo góc giống ảnh/nút */
+  overflow: hidden;
+  
+  /* MÀU SẮC: Nền của thanh progress (phần chưa chạy %) */
+  background-color: #707d9d; 
 }
 
 .progresstext {
@@ -30,28 +36,35 @@ body {
   margin: 3px 0px;
   text-align: center;
   font-size: 0.7em;
+  
+  /* MÀU SẮC: Chữ hiển thị % (ví dụ: 3%) */
+  color: #ffffff; 
 }
 
 .progressfill {
   height: 20px;
-  background-color: lightgreen;
   width: 0%;
+  border-radius: 6px;       /* Bo góc thanh phần trăm chạy */
+  
+  /* MÀU SẮC: Màu của thanh % đang chạy */
+  background-color: #11265b; 
 }
 
+/* --- KHU VỰC BÌNH CHỌN (SORTER) --- */
 .sorter {
   margin: 0px auto;
   display: grid;
-  grid-template-columns: 180px 1fr 180px; /* Điều chỉnh lại khung chứa vừa vặn ảnh 180px */
-  grid-gap: 10px;
-  width: 540px; /* Mở rộng độ rộng chung cho cân đối với ảnh 180px */
+  grid-template-columns: 180px 1fr 180px;
+  
+  /* KHOẢNG CÁCH: Tăng khoảng cách giữa 2 ảnh và 3 nút ở giữa */
+  grid-gap: 20px; 
+  width: 560px;
 }
 
-/* --- TÙY CHỈNH NÚT BẤM (BUTTONS) --- */
+/* --- NÚT BẤM CỦA BẢNG BÌNH CHỌN --- */
 .button {
-  border: none; /* Bỏ viền đen */
-  background-color: #2b3a4a; /* Màu nền fill dạng phẳng, hiện đại */
-  color: #ffffff; /* Chữ trắng rõ ràng */
-  border-radius: 8px; /* Bo góc nhẹ */
+  border: none;
+  border-radius: 8px;
   text-align: center;
   padding: 12px 8px;
   grid-column: 2 / 3;
@@ -60,10 +73,15 @@ body {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
+  
+  /* MÀU SẮC: Nền & Chữ của các nút bấm ở giữa (Hòa, Quay lại, Save Progress) */
+  background-color: #707d9d; 
+  color: #ffffff; 
 }
 
 .button:hover {
-  background-color: #3b4d61; /* Hiệu ứng đổi màu nhẹ khi hover */
+  /* MÀU SẮC: Nền các nút khi di chuột vào */
+  background-color: #a0a8bd; 
 }
 
 .starting.start.button {
@@ -89,7 +107,9 @@ body {
   width: 25px;
   height: 25px;
   margin: 50px auto;
-  background-color: #fff;
+  
+  /* MÀU SẮC: Hiệu ứng xoay/nhấp nháy khi đang load */
+  background-color: #ffffff; 
 
   border-radius: 100%;  
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
@@ -122,15 +142,15 @@ body {
   }
 }
 
-/* --- TÙY CHỈNH HÌNH ẢNH HÌNH VUÔNG 180PX & BO GÓC --- */
+/* --- HÌNH ẢNH 180PX BO GÓC --- */
 .sorter > .image {
   width: 180px;
   height: 180px;
   margin: auto;
   grid-row: 1 / 7;
   cursor: pointer;
-  border-radius: 8px; /* Bo góc nhẹ */
-  overflow: hidden;   /* Bo tròn viền cho cả ảnh bên trong */
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .sorter > .image img {
@@ -140,44 +160,60 @@ body {
   border-radius: 8px;
 }
 
-/* --- TÙY CHỈNH HIỂN THỊ TÊN BÀI HÁT (TEXT) --- */
+/* --- TÊN BÀI HÁT / CHỮ NẰM DƯỚI DẠNG ĐẦY ĐỦ --- */
 .sorter > .text {
   width: 100%;
-  height: auto; /* Để chiều cao tự động theo nội dung chữ */
+  height: auto;
   display: none;
 }
 
 .sorter > .text > p {
-  margin: 8px 0 0 0;
+  margin: 10px 0 0 0;
   width: 100%;
   text-align: center;
   font-size: 0.85em;
   line-height: 1.4em;
-  word-wrap: break-word; /* Đảm bảo tên dài tự xuống dòng không bị mất chữ */
+  word-wrap: break-word;
+  
+  /* MÀU SẮC: Chữ tên bài hát dưới ảnh */
+  color: #ffffff; 
 }
 
-/* --- BỎ VIỀN ĐEN BÊN NGOÀI BỐ CỤC KHUNG TRÁI / PHẢI --- */
 .sorter > .left {
   grid-column: 1 / 2;
-  border: none; /* Bỏ viền đen */
+  border: none;
 }
 
 .sorter > .right {
   grid-column: 3 / 4;
-  border: none; /* Bỏ viền đen */
+  border: none;
 }
 
+/* --- KHU VỰC CÁC CHECKBOX / OPTIONS --- */
 .options {
-  margin: 1em auto;
+  margin: 1.5em auto 0.5em auto;
   display: grid;
   text-align: left;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  width: 450px;
+  grid-gap: 12px;
+  width: 480px;
 }
 
+/* Tăng kích thước chữ & khoảng cách cho Checkbox */
 .options > div {
-  font-size: 0.5625em;
+  font-size: 0.85em; /* Tăng cỡ chữ checkbox to hơn hẳn */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  /* MÀU SẮC: Chữ bên cạnh checkbox */
+  color: #ffffff; 
+}
+
+/* Tăng kích thước ô vuông checkbox */
+.options input[type="checkbox"] {
+  transform: scale(1.2); 
+  cursor: pointer;
 }
 
 label {
@@ -185,13 +221,22 @@ label {
 }
 
 label:hover {
-  color: #990000;
+  /* MÀU SẮC: Chữ checkbox khi di chuột qua */
+  color: #ff8888; 
 }
 
 .options > .large.option, .options > hr {
   grid-column: span 3;
   text-align: center;
   width: 100%;
+}
+
+.options > hr {
+  margin: 10px 0;
+  
+  /* MÀU SẮC: Đường gạch ngang phân cách trên phần Options */
+  border: none;
+  border-top: 1px solid #ffffff; 
 }
 
 .image.selector {
@@ -222,7 +267,6 @@ label:hover {
   .results {
     flex-flow: column wrap;
     max-height: calc(5 * (175px + 2px) + 1 * (15px + 2px));
-    /* 2px for borders */
   }
 }
 
@@ -286,26 +330,33 @@ label:hover {
   text-align: center;
 }
 
+/* --- THÔNG TIN CHÚ THÍCH Ở ĐÁY (INFO) --- */
 .info {
-  margin: 2em auto 3em;
+  margin: 0.8em auto 2em; /* Kéo khoảng cách hở giữa đường kẻ ngang và chữ sát lại */
   display: block;
   text-align: center;
-  font-size: 0.6875em;
+  font-size: 0.75em;
   width: 80%;
-  line-height: 1.2em;
+  line-height: 1.4em;
+  
+  /* MÀU SẮC: Chữ nội dung lưu ý/chú thích ở đáy */
+  color: #ffffff; 
 }
 
+/* MÀU SẮC: Đường link (Nguồn mã Code | Clear Save Data,...) */
 a {
-  color: #990000;
+  color: #60a5fa; 
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
 }
 
 a:hover {
-  color: #FF6600;
+  /* MÀU SẮC: Link khi rê chuột vào */
+  color: #93c5fd; 
 }
 
 a:visited {
-  color: #6600FF;
+  /* MÀU SẮC: Link đã bấm qua */
+  color: #c084fc; 
 }
