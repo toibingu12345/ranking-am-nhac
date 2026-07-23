@@ -7,6 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: #11265b !important;
+  min-width: 1150px; /* Đảm bảo khung hình cố định kích thước desktop */
 }
 
 .site-wrapper {
@@ -14,6 +15,7 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 }
 
 .container {
@@ -22,12 +24,13 @@ html, body {
   flex-direction: column;
   align-items: center;
   padding: 20px 10px;
+  width: 100%;
 }
 
 /* --- TIÊU ĐỀ BẮT ĐẦU --- */
 .main-title {
   color: #ffffff !important;
-  font-size: 1.5em;
+  font-size: 1.6em;
   font-weight: 700;
   margin-top: 10px;
   margin-bottom: 25px;
@@ -35,12 +38,13 @@ html, body {
   letter-spacing: 0.5px;
 }
 
-/* --- PROGRESS BAR (ĐÃ XÓA TEXT BATTLE) --- */
+/* --- PROGRESS BAR (CĂN GIỮA CHUẨN) --- */
 .progress-wrapper {
   width: 100%;
   max-width: 565px;
   height: 35px;
-  margin-bottom: 20px; 
+  margin: 0 auto 20px auto !important; 
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -50,15 +54,13 @@ html, body {
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s ease;
+  display: flex;
+  justify-content: center;
 }
 
 .progress.active {
   visibility: visible !important;
   opacity: 1 !important;
-}
-
-.progressbattle {
-  display: none !important; /* Xóa hẳn chữ Battle No. */
 }
 
 .progressbar {
@@ -80,6 +82,7 @@ html, body {
   z-index: 2;
   color: #ffffff; 
   font-weight: 600;
+  left: 0;
 }
 
 .progressfill {
@@ -191,7 +194,7 @@ html, body {
 .sorter > .left { grid-column: 1 / 2; }
 .sorter > .right { grid-column: 3 / 4; }
 
-/* --- 3 CHECKBOX HIỂN THỊ --- */
+/* --- CHECKBOX LỌC BÀI HÁT --- */
 .options {
   margin-top: 25px;
   display: flex;
@@ -225,7 +228,7 @@ html, body {
   display: none;
 }
 
-/* --- BẢNG KẾT QUẢ & MỞ RỘNG KHUNG TÊN BÀI HÁT --- */
+/* --- BẢNG KẾT QUẢ --- */
 .results {
   display: flex !important;
   flex-direction: column !important;
@@ -293,7 +296,6 @@ html, body {
   word-break: break-word;
 }
 
-/* Mở rộng ô bài hát to ra (210px) để không bao giờ bị cắt chữ */
 .sub-results-container {
   display: grid !important;
   grid-template-columns: repeat(5, minmax(210px, 1fr)) !important; 
@@ -347,30 +349,4 @@ footer.info {
   margin-top: 8px !important;
   margin-bottom: 0 !important;
   font-size: 0.9em;
-}
-
-@media (max-width: 600px) {
-  .sorter {
-    grid-template-columns: 140px 80px 140px;
-    grid-template-rows: 140px auto;
-    grid-gap: 10px;
-    width: 370px;
-  }
-  
-  .sorter > .image, .sorter > .text, .sorter > .text > p {
-    width: 140px;
-  }
-  
-  .starting.start.button, .finished-container {
-    height: 140px;
-    width: 80px;
-  }
-  
-  .button { width: 80px; font-size: 0.85em; }
-  .sorting.tie.button, .sorting.undo.button { height: 65px; }
-  .btn-action { height: 42px; font-size: 0.75em; }
-  
-  .sub-results-container {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
 }
