@@ -56,10 +56,12 @@ body {
   color: #ffffff; 
 }
 
+/* FIX: Thêm box-sizing và bỏ bớt thuộc tính gây trôi vị trí */
 .progressfill {
   height: 100%;
   width: 0%;
   border-radius: 8px;
+  box-sizing: border-box;
   /* MÀU SẮC: Thanh phần trăm chạy */
   background-color: #4ade80; 
 }
@@ -103,14 +105,26 @@ body {
   background-color: #3b4d61; 
 }
 
-.sorting.button:nth-of-type(1), 
+/* 
+  FIX: Xử lý nút bấm theo trạng thái (chỉ xuất hiện nút cần thiết):
+  1. Ban đầu (.starting): Hiện nút "Nhấn để bắt đầu" chiếm trọn chiều cao (row 1-7).
+  2. Khi chạy (.sorting): Ẩn nút Bắt đầu, Nút 1 (Bằng nhau) gộp hàng trên, Nút 2 (Quay lại) gộp hàng dưới.
+*/
 .starting.start.button {
+  grid-row: 1 / 7 !important;
+  height: 100%;
+}
+
+.starting.load.button {
+  display: none !important;
+}
+
+.sorting.button:nth-of-type(1) {
   grid-row: 1 / 4 !important;
   margin-bottom: 10px;
 }
 
-.sorting.button:nth-of-type(2),
-.starting.load.button {
+.sorting.button:nth-of-type(2) {
   grid-row: 4 / 7 !important;
   margin-top: 10px;
 }
@@ -139,7 +153,7 @@ body {
   border-radius: 8px;
 }
 
-/* --- TÊN BÀI HÁT (TO HƠN NỮA & DÁN SÁT ẢNH) --- */
+/* --- TÊN BÀI HÁT (CHỈNH CỠ CHỮ & KHOẢNG CÁCH) --- */
 .sorter > .text {
   width: 220px;
   height: auto;
@@ -147,10 +161,10 @@ body {
 }
 
 .sorter > .text > p {
-  margin: 3px 0 0 0; /* Dán rất sát mép dưới của ảnh */
+  margin: 10px 0 0 0; /* FIX: Giảm khoảng cách cho vừa mắt, không dính đè */
   width: 220px;
   text-align: center;
-  font-size: 1.3em; /* Tăng cỡ chữ to hơn nữa */
+  font-size: 18px; /* FIX: Chỉnh kích thước chữ xuống đúng 18px */
   font-weight: bold;
   line-height: 1.25em;
   word-wrap: break-word;
@@ -171,8 +185,9 @@ body {
 }
 
 /* --- CHECKBOX / OPTIONS --- */
+/* FIX: Tăng margin-top để đẩy Checkbox xuống xa phần ảnh/tên bài hát, hết bị đè */
 .options {
-  margin: 3.5em auto 0 auto;
+  margin: 6em auto 0 auto; 
   display: grid;
   text-align: left;
   grid-template-columns: repeat(3, auto);
