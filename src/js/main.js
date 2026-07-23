@@ -435,22 +435,40 @@ function generateImage() {
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
   const filename = 'sort-' + (new Date(timeFinished - tzoffset)).toISOString().slice(0, -5).replace('T', '(') + ').png';
 
-  html2canvas(document.querySelector('.results')).then(canvas => {
-    const dataURL = canvas.toDataURL();
+  const targetElem = document.querySelector('.results');
+
+  // Đặt thông số html2canvas chuẩn để fix nền trắng và xén Top 5
+  html2canvas(targetElem, {
+    backgroundColor: '#11265b',
+    scale: 2, // Tăng độ phân giải nét cao
+    useCORS: true,
+    scrollX: 0,
+    scrollY: -window.scrollY // Sửa lỗi trượt tọa độ khi chụp
+  }).then(canvas => {
+    const dataURL = canvas.toDataURL('image/png');
     const imgButton = document.querySelector('.finished.getimg.button');
-    const resetButton = document.createElement('a');
-
-    imgButton.removeEventListener('click', generateImage);
+    
     imgButton.innerHTML = '';
-    imgButton.insertAdjacentHTML('beforeend', `<a href="${dataURL}" download="${filename}">Download Image</a><br><br>`);
+    
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataURL;
+    downloadLink.download = filename;
+    downloadLink.innerText = 'Download Image';
+    
+    const resetButton = document.createElement('div');
+    resetButton.innerText = 'Reset';
+    resetButton.style.marginTop = '6px';
+    resetButton.style.fontSize = '0.8em';
+    resetButton.style.opacity = '0.8';
+    
+    imgButton.appendChild(downloadLink);
+    imgButton.appendChild(resetButton);
 
-    resetButton.insertAdjacentText('beforeend', 'Reset');
     resetButton.addEventListener('click', (event) => {
-      imgButton.addEventListener('click', generateImage);
-      imgButton.innerHTML = 'Generate Image';
       event.stopPropagation();
+      imgButton.innerHTML = 'Generate Image';
+      imgButton.addEventListener('click', generateImage, { once: true });
     });
-    imgButton.insertAdjacentElement('beforeend', resetButton);
   });
 }
 
