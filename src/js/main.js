@@ -74,40 +74,27 @@ function init() {
 }
 
 function start() {
-  // LỌC BÀI HÁT THEO CHECKBOX DỰA TRÊN DỮ LIỆU OPTS
+  // LỌC BÀI HÁT THEO CHECKBOX DỰA TRÊN CẤU TRÚC opts: { theloai: ["ngot", ...] }
   characterDataToSort = characterData.filter(char => {
-    if (!char.opts) return true;
-    
-    // Kiểm tra xem bài hát thuộc group nào
-    if (char.opts.hasOwnProperty('ngot')) {
-      const isNgotChecked = document.getElementById('opt-ngot')?.checked ?? true;
-      if (char.opts.ngot && !isNgotChecked) return false;
-    }
-    
-    if (char.opts.hasOwnProperty('thang')) {
-      const isThangChecked = document.getElementById('opt-thang')?.checked ?? true;
-      if (char.opts.thang && !isThangChecked) return false;
-    }
+    if (!char.opts || !char.opts.theloai) return true;
 
-    if (char.opts.hasOwnProperty('group')) {
-      return char.opts.group.some(optId => {
-        const checkbox = document.getElementById(`opt-${optId}`);
-        return checkbox ? checkbox.checked : true;
-      });
-    }
+    const songCategories = char.opts.theloai;
 
-    return true;
+    // Giữ bài hát nếu có ít nhất 1 thể loại của nó đang được tích
+    return songCategories.some(catKey => {
+      const checkbox = document.getElementById(`opt-${catKey}`);
+      return checkbox ? checkbox.checked : true;
+    });
   });
 
   if (characterDataToSort.length < 2) {
-    alert('Không đủ bài hát để xếp hạng! Vui lòng chọn ít nhất 1 nguồn nhạc.');
+    alert('Không đủ bài hát để xếp hạng! Vui lòng chọn ít nhất 1 danh mục nhạc.');
     return;
   }
 
   // Ẩn tiêu đề lớn và hiện progress bar
   document.querySelector('.main-title').style.display = 'none';
   document.querySelector('.progress-wrapper').style.display = 'flex';
-
   document.querySelector('.options').style.display = 'none';
 
   timestamp = timestamp || new Date().getTime();
@@ -442,11 +429,12 @@ function setLatestDataset() {
   const optionsElem = document.querySelector('.options');
   optionsElem.innerHTML = '';
 
+  // Tạo checkbox với id dạng opt-{key} ("opt-ngot", "opt-thang", "opt-demo_thang")
   options.forEach(optGroup => {
     optGroup.sub.forEach(opt => {
       const label = document.createElement('label');
       label.innerHTML = `
-        <input type="checkbox" id="opt-${opt.id}" ${opt.checked !== false ? 'checked' : ''}>
+        <input type="checkbox" id="opt-${opt.key}" checked>
         <span>${opt.name}</span>
       `;
       optionsElem.appendChild(label);
