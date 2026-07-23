@@ -493,3 +493,135 @@ a:visited {
 .finished-buttons-wrap .button:hover {
   background-color: #0e1e49 !important;
 }
+
+/* --- 1. KHUNG CHỨA PROGRESS BAR CỐ ĐỊNH CHIỀU CAO (KHÔNG BỊ DÍNH / CO GIẬT) --- */
+.progress-wrapper {
+  width: 500px;
+  height: 50px; /* Dành riêng khoảng trống 50px cố định phía trên */
+  margin: 10px auto 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress {
+  width: 100%;
+  height: 26px;
+  visibility: hidden; /* Mặc định ẩn nhưng vẫn giữ nguyên chỗ */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.progress.active {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.progressbar {
+  position: relative;
+  width: 100%;
+  height: 26px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-color: #09132e; 
+}
+
+.progresstext {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  text-align: center;
+  font-size: 0.75em;
+  z-index: 2;
+  color: #ffffff; 
+}
+
+.progressfill {
+  height: 100%;
+  width: 0%;
+  border-radius: 8px;
+  background-color: #0e1e49; 
+}
+
+/* --- 2. KHUNG CHÍNH (CỐ ĐỊNH VỊ TRÍ) --- */
+.sorter {
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 220px 100px 220px;
+  grid-template-rows: 220px auto; 
+  grid-gap: 15px 25px; 
+  width: 565px;
+  align-items: start;
+}
+
+/* Các nút trong lúc đấu */
+.button {
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  grid-column: 2 / 3;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 1.05em;
+  font-weight: 500;
+  background-color: #09132e; 
+  color: #ffffff; 
+  line-height: 1.3 !important;
+}
+
+.button:hover {
+  background-color: #0e1e49; 
+}
+
+.starting.start.button {
+  grid-row: 1;
+  height: 220px; /* Cao bằng đúng ảnh */
+}
+
+.sorting.tie.button { grid-row: 1; align-self: start; height: 100px; }
+.sorting.undo.button { grid-row: 1; align-self: end; height: 100px; }
+
+/* --- 3. KHUNG 3 NÚT KẾT QUẢ NẰM GIỮA 2 ẢNH --- */
+.finished-container {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px; /* Bằng đúng 220px của 2 tấm ảnh 2 bên */
+  width: 100px;
+}
+
+.btn-action {
+  width: 100%;
+  height: 66px; /* Chia đều 3 nút khớp khăng khít chiều cao 220px */
+  border: none;
+  border-radius: 8px;
+  background-color: #09132e;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.btn-action:hover {
+  background-color: #0e1e49;
+}
+
+/* Ẩn các nút không dùng tới */
+.save.button, .loading.button, .starting.load.button { display: none !important; }
