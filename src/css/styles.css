@@ -10,12 +10,11 @@ body {
   margin-top: 1em;
 }
 
-/* --- 1. THANH TIẾN TRÌNH (ẨN HOÀN TOÀN KHI CHƯA BẤM BẮT ĐẦU) --- */
 .progress {
-  margin: 1em auto 2em auto !important;
+  margin: 1.5em auto 1.2em auto !important;
   width: 500px;
   height: 26px;
-  display: none; /* Ban đầu ẩn hoàn toàn */
+  display: none;
 }
 
 /* Kích hoạt khi chạy sorter */
@@ -178,9 +177,8 @@ body {
   border: none;
 }
 
-/* --- 5. CHECKBOX / OPTIONS --- */
 .options {
-  margin: 3.5em auto 0 auto; 
+  margin: 1.2em auto 0 auto; /* Đổi 3.5em thành 1.2em để kéo checkbox lên cao */
   display: grid;
   text-align: left;
   grid-template-columns: repeat(3, auto);
