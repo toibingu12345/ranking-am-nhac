@@ -35,7 +35,7 @@ body {
   overflow: hidden;
   display: flex;
   align-items: center;
-  background-color: #58678c; 
+  background-color: #09132e; 
 }
 
 .progresstext {
@@ -89,27 +89,26 @@ body {
   box-sizing: border-box;
   font-size: 1.05em;
   font-weight: 500;
-  background-color: #58678c; 
+  background-color: #09132e; 
   color: #11265b; 
   line-height: 1.3 !important;
 }
 
 .button:hover {
-  background-color: #8893ad; 
+  background-color: #0e1e49; 
 }
 
-/* Ban đầu ẩn 2 nút bình chọn */
 .sorting.button {
   display: none;
 }
 
-/* Nút bắt đầu nằm gọn giữa 2 ảnh */
+
 .starting.start.button {
   grid-row: 1;
   height: 220px; /* Bằng đúng chiều cao ảnh */
 }
 
-/* 2 nút bình chọn khi chơi */
+
 .sorting.tie.button {
   grid-row: 1;
   align-self: start;
