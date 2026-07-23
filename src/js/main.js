@@ -74,7 +74,6 @@ function init() {
 }
 
 function start() {
-  // Lọc dữ liệu dựa theo các checkbox con đã chọn
   characterDataToSort = characterData.filter(char => {
     if (char.opts && char.opts.group) {
       return char.opts.group.some(optId => {
@@ -86,11 +85,14 @@ function start() {
   });
 
   if (characterDataToSort.length < 2) {
-    alert('Không đủ bài hát để xếp hạng! Vui lòng tích chọn thêm mục.');
+    alert('Không đủ bài hát để xếp hạng! Vui lòng chọn thêm checkbox.');
     return;
   }
 
-  // Ẩn khung Tùy chọn khi bắt đầu đấu
+  // Ẩn tiêu đề lớn và hiện progress bar
+  document.querySelector('.main-title').style.display = 'none';
+  document.querySelector('.progress-wrapper').style.display = 'flex';
+
   document.querySelector('.options').style.display = 'none';
 
   timestamp = timestamp || new Date().getTime();
@@ -158,7 +160,7 @@ function display() {
 
   const charNameDisp = name => `<p>${name}</p>`;
 
-  progressBar(`Battle No. ${battleNo}`, percent);
+  progressBar(percent);
 
   document.querySelector('.left.sort.image').src = leftChar.img;
   document.querySelector('.right.sort.image').src = rightChar.img;
@@ -256,7 +258,7 @@ function pick(sortType) {
 
   if (leftIndex < 0) {
     timeTaken = timeTaken || new Date().getTime() - timestamp;
-    progressBar(`Battle No. ${battleNo} - Hoàn thành!`, 100);
+    progressBar(100);
     result();
   } else {
     battleNo++;
@@ -277,9 +279,7 @@ function recordData(sortType) {
   sortedNo++;
 }
 
-function progressBar(indicator, percentage) {
-  const battleElem = document.querySelector('.progressbattle');
-  if (battleElem) battleElem.innerHTML = indicator;
+function progressBar(percentage) {
   document.querySelector('.progressfill').style.width = `${percentage}%`;
   document.querySelector('.progresstext').innerHTML = `${percentage}%`;
 }
@@ -378,6 +378,7 @@ function undo() {
   display();
 }
 
+/* SỬA HOÀN TOÀN LỖI CHỪA VIỀN TRẮNG KHI LƯU ẢNH */
 function generateImage() {
   const timeFinished = timestamp + timeTaken;
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
@@ -388,7 +389,11 @@ function generateImage() {
   html2canvas(targetElem, {
     backgroundColor: '#11265b',
     useCORS: true,
-    scale: 2
+    scale: 2,
+    scrollX: 0,
+    scrollY: 0,
+    width: targetElem.offsetWidth,
+    height: targetElem.offsetHeight
   }).then(canvas => {
     const dataURL = canvas.toDataURL('image/png');
     const imgBtn = document.querySelector('.finished.getimg');
@@ -420,24 +425,18 @@ function setLatestDataset() {
   characterData = dataSet[currentVersion].characterData;
   options = dataSet[currentVersion].options;
 
-  // Render danh sách Checkbox
   const optionsElem = document.querySelector('.options');
   optionsElem.innerHTML = '';
 
   options.forEach(optGroup => {
-    const groupDiv = document.createElement('div');
-    groupDiv.className = 'opt-group';
-
     optGroup.sub.forEach(opt => {
       const label = document.createElement('label');
       label.innerHTML = `
         <input type="checkbox" id="opt-${opt.id}" ${opt.checked !== false ? 'checked' : ''}>
         <span>${opt.name}</span>
       `;
-      groupDiv.appendChild(label);
+      optionsElem.appendChild(label);
     });
-
-    optionsElem.appendChild(groupDiv);
   });
 }
 
@@ -450,7 +449,7 @@ function preloadImages() {
     return new Promise((res, rej) => {
       const reader = new FileReader();
       reader.onload = ev => {
-        progressBar(`Loading Image ${++imagesLoaded}`, Math.floor(imagesLoaded * 100 / totalLength));
+        progressBar(Math.floor(imagesLoaded * 100 / totalLength));
         res(ev.target.result);
       };
       reader.onerror = rej;
