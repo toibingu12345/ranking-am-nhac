@@ -5,6 +5,7 @@
   <link rel="shortcut icon" href="src/assets/yinyang.ico" type="image/x-icon">
   <link rel="icon" href="src/assets/yinyang.ico" type="image/x-icon">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="og:site_name" content="Xếp hạng bài hát của Ngọt / Thắng">
   <meta name="og:description" content="Xếp hạng bài hát của Ngọt / Thắng">
   <meta name="og:image" content="https://i.imgur.com/IZzJMk6.jpg">
@@ -40,10 +41,6 @@
       line-height: 1.6 !important;
     }
 
-    .info p {
-      margin-bottom: 12px;
-    }
-
     h1, h2, h3, h4 {
       color: #ffffff !important;
       line-height: 1.4 !important;
@@ -59,62 +56,59 @@
 </head>
 
 <body>
-  <div class="container">
-    <!-- Progress bar cố định vị trí -->
-    <div class="progress-wrapper">
-      <div class="progress">
-        <span class="progressbattle"></span>
-        <div class="progressbar">
-          <div class="progressfill"></div>
-          <span class="progresstext">0%</span>
+  <div class="site-wrapper">
+    <div class="container">
+      <!-- 1. Progress Bar được đưa hẳn lên trên đầu -->
+      <div class="progress-wrapper">
+        <div class="progress">
+          <span class="progressbattle"></span>
+          <div class="progressbar">
+            <div class="progressfill"></div>
+            <span class="progresstext">0%</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Khung đấu nhạc chính -->
-    <div class="sorter">
-      <img src="src/assets/defaultL.jpg" class="left sort image" alt="Left Option">
+      <!-- 2. Khung thi đấu chính -->
+      <div class="sorter">
+        <img src="src/assets/defaultL.jpg" class="left sort image" alt="Left Option">
 
-      <!-- 1. Trạng thái VỪA VÀO -->
-      <div class="starting start button">Nhấn để bắt đầu</div>
-      <div class="starting load button">Load <span></span></div>
-      <div class="loading button"><div></div><span>Loading...</span></div>
+        <!-- Các trạng thái nút bấm -->
+        <div class="starting start button">Nhấn để bắt đầu</div>
+        <div class="starting load button">Load <span></span></div>
+        <div class="loading button"><div></div><span>Loading...</span></div>
 
-      <!-- 2. Trạng thái TRONG LÚC CHƠI -->
-      <div class="sorting tie button">Bằng nhau</div>
-      <div class="sorting undo button">Quay lại</div>
+        <div class="sorting tie button">Bằng nhau</div>
+        <div class="sorting undo button">Quay lại</div>
 
-      <!-- 3. Trạng thái KẾT THÚC (3 nút xếp dọc chính giữa 2 ảnh) -->
-      <div class="finished-container">
-        <button class="btn-action finished getimg">Lưu ảnh</button>
-        <button class="btn-action finished list">Lưu văn bản</button>
-        <button class="btn-action finished retry">Thử lại</button>
+        <div class="finished-container">
+          <button class="btn-action finished getimg">Lưu ảnh</button>
+          <button class="btn-action finished list">Lưu văn bản</button>
+          <button class="btn-action finished retry">Thử lại</button>
+        </div>
+
+        <img src="src/assets/defaultR.jpg" class="right sort image" alt="Right Option">
+
+        <div class="left sort text"><p></p></div>
+        <div class="right sort text"><p></p></div>
       </div>
 
-      <img src="src/assets/defaultR.jpg" class="right sort image" alt="Right Option">
-
-      <div class="left sort text"><p></p></div>
-      <div class="right sort text"><p></p></div>
+      <div class="time taken"></div>
+      
+      <!-- Bảng kết quả -->
+      <div class="results" id="results-container"></div>
     </div>
 
-    <!-- Khung Options Box (Lựa chọn danh mục / album) -->
-    <div class="options"></div>
-
-    <div class="image selector">Display Images on Result: </div>
-    <div class="time taken"></div>
-    <div class="results"></div>
-
-    <div class="info">
+    <!-- 3. Chân trang cố định luôn ở tít cuối cùng -->
+    <footer class="info">
       <a href="https://github.com/execfera/charasort/" target="_blank" rel="noopener noreferrer">Source</a> | 
       <a href="https://open.spotify.com/artist/0V2DfUrZvBuUReS1LFo5ZI" target="_blank" rel="noopener noreferrer">Ngọt (Spotify)</a> | 
       <a href="https://open.spotify.com/artist/1oD9fKbb7qQ2nhn9JJC24F" target="_blank" rel="noopener noreferrer">Thắng (Spotify)</a>
 
-      <br><br>
-
-      <p>Cập nhật gần nhất: 23/07/2026</p>
-      <p>Phần mềm sử dụng: Github, Gemini (hỗ trợ tạo và sửa code)</p>
-      <p>Phím tắt máy tính: H (chọn bên TRÁI), J (QUAY LẠI), K (BẰNG NHAU), L (chọn bên PHẢI)</p>
-    </div>
+      <p class="info-detail">Cập nhật gần nhất: 23/07/2026</p>
+      <p class="info-detail">Phần mềm sử dụng: Github, Gemini (hỗ trợ tạo và sửa code)</p>
+      <p class="info-detail">Phím tắt máy tính: H (chọn bên TRÁI), J (QUAY LẠI), K (BẰNG NHAU), L (chọn bên PHẢI)</p>
+    </footer>
   </div>
 </body>
 
