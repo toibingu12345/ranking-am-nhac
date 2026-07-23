@@ -459,3 +459,37 @@ a:visited {
   margin-bottom: 35px !important;
   flex-wrap: wrap !important;
 }
+
+/* Khung chứa 3 nút ở giữa 2 ảnh */
+.finished-buttons-wrap {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  display: none; /* Ban đầu ẩn */
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px; /* Bằng chính xác chiều cao 2 tấm ảnh 2 bên */
+  width: 100px;
+}
+
+/* Kiểu dáng chung cho 3 nút kết quả */
+.finished-buttons-wrap .button {
+  width: 100% !important;
+  height: 64px !important; /* Chia đều 3 nút khớp chiều cao 220px */
+  margin: 0 !important;
+  padding: 0 5px !important;
+  font-size: 0.85em !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background-color: #09132e !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.finished-buttons-wrap .button:hover {
+  background-color: #0e1e49 !important;
+}
