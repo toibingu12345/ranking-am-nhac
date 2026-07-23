@@ -342,22 +342,26 @@ a:visited {
   color: #58678c; 
 }
 
+/* --- BỐ CỤC KHUNG KẾT QUẢ TỔNG --- */
 .results {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   width: 100% !important;
-  max-width: 1000px !important;
+  max-width: 1100px !important;
   margin: 30px auto !important;
+  height: auto !important;
+  max-height: none !important;
 }
 
-/* --- 1. PHẦN TOP 5 NẰM NGANG --- */
+/* --- 1. TOP 5 NẰM NGANG CÓ ẢNH --- */
 .top5-container {
   display: flex !important;
   justify-content: center !important;
-  gap: 18px !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
   width: 100% !important;
-  margin-bottom: 35px !important;
+  margin-bottom: 40px !important;
   flex-wrap: wrap !important;
 }
 
@@ -366,29 +370,29 @@ a:visited {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 105px;
+  width: 110px;
 }
 
 .top-badge {
   position: absolute;
-  top: -12px;
-  left: -6px;
-  background-color: #d9a05b; /* Màu vàng cam giống ảnh mẫu */
+  top: -10px;
+  left: -5px;
+  background-color: #e3a869; /* Badge vàng cam Top 5 */
   color: #ffffff !important;
   font-weight: 700;
-  font-size: 0.75em;
-  padding: 2px 7px;
+  font-size: 0.8em;
+  padding: 2px 8px;
   border-radius: 12px;
   z-index: 3;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
 }
 
 .top-img-wrap {
-  width: 95px;
-  height: 95px;
+  width: 100px;
+  height: 100px;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   background-color: #09132e;
 }
 
@@ -399,43 +403,42 @@ a:visited {
 }
 
 .top-name {
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 0.8em !important;
   font-weight: 600;
   color: #ffffff !important;
   text-align: center;
-  line-height: 1.2 !important;
+  line-height: 1.3 !important;
   word-break: break-word;
 }
 
-/* --- 2. PHẦN DANH SÁCH CHỮ BÊN DƯỚI (XẾP CỘT) --- */
+/* --- 2. DƯỚI TOP 5: GRID DẠNG CỘT CHỈ CÓ CHỮ (TỰ CHIA 5 CỘT BẰNG NHAU) --- */
 .sub-results-container {
-  display: flex !important;
-  flex-direction: column !important;
-  flex-wrap: wrap !important;
-  max-height: 280px !important; /* Độ cao cột, thừa sẽ tự nhảy sang cột mới bên phải */
-  column-gap: 30px !important;
-  row-gap: 10px !important;
-  justify-content: flex-start !important;
-  align-content: center !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(160px, 1fr)) !important; /* Chia sẵn 5 cột ngang */
+  gap: 12px 20px !important;
   width: 100% !important;
+  justify-content: center !important;
 }
 
+/* Thẻ con từng ô hạng từ #6 trở đi */
 .sub-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 140px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: rgba(255, 255, 255, 0.05); /* Hiệu ứng nền mờ nhẹ cực đẹp */
+  padding: 6px 10px;
+  border-radius: 20px;
 }
 
-/* Badge số thứ tự tròn màu xanh nước biển */
+/* Badge xanh lá / xanh dương nhạt chứa số thứ tự tròn */
 .sub-badge {
-  background-color: #5bb3e8; /* Xanh ngọc/xanh dương nhẹ */
+  background-color: #4ebbe4;
   color: #ffffff !important;
   font-weight: 700;
   font-size: 0.75em;
-  width: 22px;
-  height: 22px;
+  min-width: 24px;
+  height: 24px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -445,9 +448,17 @@ a:visited {
 
 .sub-name {
   font-size: 0.82em !important;
+  font-weight: 500;
   color: #ffffff !important;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* Tên dài tự động đổi thành dấu ... */
   max-width: 130px;
+}
+
+/* Tự động co 5 cột thành 2-3 cột trên màn hình điện thoại nhỏ */
+@media (max-width: 800px) {
+  .sub-results-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  }
 }
