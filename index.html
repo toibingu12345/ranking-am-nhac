@@ -41,14 +41,6 @@
       line-height: 1.6 !important;
     }
 
-    h1, h2, h3, h4 {
-      color: #ffffff !important;
-      line-height: 1.4 !important;
-      margin-top: 25px;
-      margin-bottom: 15px;
-      letter-spacing: 1px;             
-    }
-
     a {
       color: #82b1ff !important;
     }
@@ -58,10 +50,13 @@
 <body>
   <div class="site-wrapper">
     <div class="container">
-      <!-- 1. Progress Bar được chừa hẳn lên trên cùng -->
-      <div class="progress-wrapper">
+      
+      <!-- Tiêu đề trang đầu (Sẽ ẩn khi bắt đầu) -->
+      <h1 class="main-title">Xếp hạng nhạc Ngọt / Thắng</h1>
+
+      <!-- Progress Bar (Sẽ hiện khi bắt đầu, không có chữ Battle) -->
+      <div class="progress-wrapper" style="display: none;">
         <div class="progress">
-          <span class="progressbattle"></span>
           <div class="progressbar">
             <div class="progressfill"></div>
             <span class="progresstext">0%</span>
@@ -69,7 +64,7 @@
         </div>
       </div>
 
-      <!-- 2. Khung thi đấu chính -->
+      <!-- Khung đấu nhạc -->
       <div class="sorter">
         <img src="src/assets/defaultL.jpg" class="left sort image" alt="Left Option">
 
@@ -92,16 +87,16 @@
         <div class="right sort text"><p></p></div>
       </div>
 
-      <!-- 3. Khung tùy chọn Options (Đã xóa cái đầu tiên, giữ lại các checkbox bên dưới) -->
+      <!-- 3 Checkbox đơn giản -->
       <div class="options"></div>
 
       <div class="time taken"></div>
       
-      <!-- 4. Bảng kết quả -->
+      <!-- Bảng kết quả -->
       <div class="results" id="results-container"></div>
     </div>
 
-    <!-- 5. Chân trang cố định luôn ở tít dưới cùng -->
+    <!-- Footers -->
     <footer class="info">
       <a href="https://github.com/execfera/charasort/" target="_blank" rel="noopener noreferrer">Source</a> | 
       <a href="https://open.spotify.com/artist/0V2DfUrZvBuUReS1LFo5ZI" target="_blank" rel="noopener noreferrer">Ngọt (Spotify)</a> | 
