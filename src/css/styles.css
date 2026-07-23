@@ -12,11 +12,10 @@ body {
 
 /* --- THANH TIẾN TRÌNH (GIỮ NGUYÊN VỊ TRÍ LAYOUT KHÔNG BỊ TRÔI) --- */
 .progress {
-  margin: 1em auto;
+  margin: 1.5em auto 2.5em auto !important; /* Tạo khoảng cách thoáng ở dưới */
   width: 500px;
-  height: 26px; /* Cố định chiều cao sẵn để giữ vị trí */
-  display: block !important; /* Luôn chiếm diện tích */
-  visibility: hidden; /* Ẩn đi khi chưa chạy mà không làm trôi layout */
+  height: 26px;
+  display: block !important;
 }
 
 /* Khi JS thêm style display hoặc chạy progress thì hiện lên */
@@ -66,16 +65,15 @@ body {
   background-color: #4ade80; 
 }
 
-/* --- BẢNG BÌNH CHỌN (SORTER) --- */
 .sorter {
   margin: 0px auto;
   display: grid;
   grid-template-columns: 220px 100px 220px;
-  grid-template-rows: repeat(6, 1fr);
-  grid-gap: 0 25px; 
+  grid-template-rows: 220px auto; /* Hàng 1 cho Ảnh/Nút (220px), Hàng 2 tự động cho Tên nhạc */
+  grid-gap: 15px 25px; /* Tăng khoảng cách dòng giữa Ảnh và Tên */
   width: 565px;
-  height: 220px;
-  align-items: center;
+  height: auto; /* Để height tự điều chỉnh theo tên bài hát */
+  align-items: start;
 }
 
 /* NÚT BẤM CÂN BẰNG */
@@ -138,7 +136,7 @@ body {
   width: 220px;
   height: 220px;
   margin: 0;
-  grid-row: 1 / 7;
+  grid-row: 1; 
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
@@ -156,20 +154,20 @@ body {
   width: 220px;
   height: auto;
   display: block !important;
+  grid-row: 2; /* Ép tên nhạc luôn nằm ở hàng thứ 2 */
 }
 
 .sorter > .text > p {
-  margin: 10px 0 0 0; /* FIX: Giảm khoảng cách cho vừa mắt, không dính đè */
+  margin: 0 !important; /* Xóa margin đè từ HTML */
   width: 220px;
   text-align: center;
-  font-size: 18px; /* FIX: Chỉnh kích thước chữ xuống đúng 18px */
-  font-weight: bold;
-  line-height: 1.25em;
+  font-size: 0.95em !important; /* Giảm cỡ chữ xuống một chút để cân đối */
+  font-weight: 600;
+  line-height: 1.4em !important;
   word-wrap: break-word;
-  overflow: visible;
-  white-space: normal;
-  /* MÀU SẮC: Chữ tên bài hát */
-  color: #ffffff; 
+  white-space: normal !important; /* Cho phép xuống dòng tự do */
+  overflow: visible !important;
+  color: #ffffff !important; 
 }
 
 .sorter > .left {
