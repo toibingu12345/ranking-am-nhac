@@ -74,18 +74,33 @@ function init() {
 }
 
 function start() {
+  // LỌC BÀI HÁT THEO CHECKBOX DỰA TRÊN DỮ LIỆU OPTS
   characterDataToSort = characterData.filter(char => {
-    if (char.opts && char.opts.group) {
+    if (!char.opts) return true;
+    
+    // Kiểm tra xem bài hát thuộc group nào
+    if (char.opts.hasOwnProperty('ngot')) {
+      const isNgotChecked = document.getElementById('opt-ngot')?.checked ?? true;
+      if (char.opts.ngot && !isNgotChecked) return false;
+    }
+    
+    if (char.opts.hasOwnProperty('thang')) {
+      const isThangChecked = document.getElementById('opt-thang')?.checked ?? true;
+      if (char.opts.thang && !isThangChecked) return false;
+    }
+
+    if (char.opts.hasOwnProperty('group')) {
       return char.opts.group.some(optId => {
         const checkbox = document.getElementById(`opt-${optId}`);
         return checkbox ? checkbox.checked : true;
       });
     }
+
     return true;
   });
 
   if (characterDataToSort.length < 2) {
-    alert('Không đủ bài hát để xếp hạng! Vui lòng chọn thêm checkbox.');
+    alert('Không đủ bài hát để xếp hạng! Vui lòng chọn ít nhất 1 nguồn nhạc.');
     return;
   }
 
@@ -378,7 +393,6 @@ function undo() {
   display();
 }
 
-/* SỬA HOÀN TOÀN LỖI CHỪA VIỀN TRẮNG KHI LƯU ẢNH */
 function generateImage() {
   const timeFinished = timestamp + timeTaken;
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
