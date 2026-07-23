@@ -347,35 +347,52 @@ function result() {
   document.querySelector('.info').style.display = 'none';
 
   const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}.`;
-  
-  // HTML mẫu cho mỗi thẻ kết quả (Gồm badge xếp hạng, ảnh và tên)
-  const imgRes = (char, num) => {
-    return `
-      <div class="result-card">
-        <div class="rank-badge">#${num}</div>
-        <div class="card-img-wrap">
-          <img src="${char.img}" alt="${char.name}">
-        </div>
-        <div class="card-name">${char.name}</div>
-      </div>
-    `;
-  };
 
-  let rankNum       = 1;
-  let tiedRankNum   = 1;
+  let rankNum     = 1;
+  let tiedRankNum = 1;
 
   const finalSortedIndexes = sortedIndexList[0].slice(0);
   const resultTable = document.querySelector('.results');
   const timeElem = document.querySelector('.time.taken');
 
-  resultTable.innerHTML = ''; // Xóa sạch nội dung cũ
+  resultTable.innerHTML = ''; 
   timeElem.innerHTML = timeStr;
+
+  // Tạo 2 container riêng
+  const topContainer = document.createElement('div');
+  topContainer.className = 'top5-container';
+
+  const subContainer = document.createElement('div');
+  subContainer.className = 'sub-results-container';
 
   characterDataToSort.forEach((val, idx) => {
     const characterIndex = finalSortedIndexes[idx];
     const character = characterDataToSort[characterIndex];
     
-    resultTable.insertAdjacentHTML('beforeend', imgRes(character, rankNum));
+    // Top 5 đầu tiên sẽ có hình ảnh + badge cam
+    if (idx < 5) {
+      const topHtml = `
+        <div class="top-card">
+          <div class="top-badge">#${rankNum}</div>
+          <div class="top-img-wrap">
+            <img src="${character.img}" alt="${character.name}">
+          </div>
+          <div class="top-name">${character.name}</div>
+        </div>
+      `;
+      topContainer.insertAdjacentHTML('beforeend', topHtml);
+    } 
+    // Từ thứ 6 trở đi chỉ hiện chữ + badge tròn xanh
+    else {
+      const subHtml = `
+        <div class="sub-item">
+          <span class="sub-badge">${rankNum}</span>
+          <span class="sub-name">${character.name}</span>
+        </div>
+      `;
+      subContainer.insertAdjacentHTML('beforeend', subHtml);
+    }
+
     finalCharacters.push({ rank: rankNum, name: character.name });
 
     if (idx < characterDataToSort.length - 1) {
@@ -387,6 +404,9 @@ function result() {
       }
     }
   });
+
+  resultTable.appendChild(topContainer);
+  resultTable.appendChild(subContainer);
 }
 
 function undo() {
