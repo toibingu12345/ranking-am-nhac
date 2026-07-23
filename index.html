@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="vi">
 
 <head>
   <link rel="shortcut icon" href="src/assets/yinyang.ico" type="image/x-icon">
@@ -24,76 +25,75 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    background-color: #11265b !important;
-    color: #ffffff !important;
-    font-size: 17px !important;       
-    line-height: 1.7 !important;      
-    letter-spacing: 0.3px;           
-  }
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      background-color: #11265b !important;
+      color: #ffffff !important;
+      font-size: 17px !important;       
+      line-height: 1.7 !important;      
+      letter-spacing: 0.3px;           
+    }
 
-  p, li, span, div {
-    color: #ffffff !important;
-    line-height: 1.6 !important;
-  }
+    p, li, span, div {
+      color: #ffffff !important;
+      line-height: 1.6 !important;
+    }
 
-  .info p {
-    margin-bottom: 12px;
-  }
+    .info p {
+      margin-bottom: 12px;
+    }
 
-  h1, h2, h3, h4 {
-    color: #ffffff !important;
-    line-height: 1.4 !important;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    letter-spacing: 1px;             
-  }
+    h1, h2, h3, h4 {
+      color: #ffffff !important;
+      line-height: 1.4 !important;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      letter-spacing: 1px;             
+    }
 
-  a {
-    color: #82b1ff !important;
-  }
-</style>
-  
+    a {
+      color: #82b1ff !important;
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-
+  <div class="container">
     <!-- Progress bar chiếm riêng 1 hàng cố định chiều cao -->
     <div class="progress-wrapper">
-        <div class="progress">
-            <span class="progressbattle"></span>
-            <div class="progressbar">
-                <div class="progressfill"><span class="progresstext"></span></div>
-            </div>
+      <div class="progress">
+        <span class="progressbattle"></span>
+        <div class="progressbar">
+          <div class="progressfill"></div>
+          <span class="progresstext">0%</span>
         </div>
+      </div>
     </div>
 
     <!-- Khung sorter cố định -->
     <div class="sorter">
-        <img src="src/assets/defaultL.jpg" class="left sort image">
+      <img src="src/assets/defaultL.jpg" class="left sort image" alt="Left Option">
 
-        <!-- Các nút trạng thái lúc chơi -->
-        <div class="starting start button">Nhấn để bắt đầu</div>
-        <div class="starting load button">Load <span></span></div>
-        <div class="loading button"><div></div><span>Loading...</span></div>
+      <!-- Các nút trạng thái lúc bắt đầu & đang sắp xếp -->
+      <div class="starting start button">Nhấn để bắt đầu</div>
+      <div class="starting load button">Load <span></span></div>
+      <div class="loading button"><div></div><span>Loading...</span></div>
 
-        <div class="sorting tie button">Bằng nhau</div>
-        <div class="sorting undo button">Quay lại</div>
+      <div class="sorting tie button">Bằng nhau</div>
+      <div class="sorting undo button">Quay lại</div>
 
-        <!-- Khung 3 nút kết quả nằm gọn chính giữa 2 ảnh -->
-        <div class="finished-container">
-            <button class="btn-action finished getimg">Lưu ảnh</button>
-            <button class="btn-action finished list">Lưu văn bản</button>
-            <button class="btn-action finished retry">Thử lại</button>
-        </div>
+      <!-- Khung 3 nút kết quả nằm gọn chính giữa 2 ảnh -->
+      <div class="finished-container">
+        <button class="btn-action finished getimg">Lưu ảnh</button>
+        <button class="btn-action finished list">Lưu văn bản</button>
+        <button class="btn-action finished retry">Thử lại</button>
+      </div>
 
-        <img src="src/assets/defaultR.jpg" class="right sort image">
+      <img src="src/assets/defaultR.jpg" class="right sort image" alt="Right Option">
 
-        <div class="left sort text"><p></p></div>
-        <div class="right sort text"><p></p></div>
+      <div class="left sort text"><p></p></div>
+      <div class="right sort text"><p></p></div>
     </div>
 
     <div class="options"></div>
@@ -102,57 +102,17 @@
     <div class="results"></div>
 
     <div class="info">
-        <a href="https://github.com/execfera/charasort/" target="_blank" rel="noopener noreferrer">Source</a> | <a href="https://open.spotify.com/artist/0V2DfUrZvBuUReS1LFo5ZI" target="_blank" rel="noopener noreferrer">Ngọt (Spotify)</a> | <a href="https://open.spotify.com/artist/1oD9fKbb7qQ2nhn9JJC24F" target="_blank" rel="noopener noreferrer">Thắng (Spotify)</a>
+      <a href="https://github.com/execfera/charasort/" target="_blank" rel="noopener noreferrer">Source</a> | 
+      <a href="https://open.spotify.com/artist/0V2DfUrZvBuUReS1LFo5ZI" target="_blank" rel="noopener noreferrer">Ngọt (Spotify)</a> | 
+      <a href="https://open.spotify.com/artist/1oD9fKbb7qQ2nhn9JJC24F" target="_blank" rel="noopener noreferrer">Thắng (Spotify)</a>
 
-        <br><br>
+      <br><br>
 
-        <p>Cập nhật gần nhất: 23/07/2026</p>
-        <p>Phần mềm sử dụng: Github, Gemini (hỗ trợ tạo và sửa code)</p>
-        <p>Phím tắt máy tính: H (chọn bên TRÁI), J (QUAY LẠI), K (BẰNG NHAU), L (chọn bên PHẢI)</p>
+      <p>Cập nhật gần nhất: 23/07/2026</p>
+      <p>Phần mềm sử dụng: Github, Gemini (hỗ trợ tạo và sửa code)</p>
+      <p>Phím tắt máy tính: H (chọn bên TRÁI), J (QUAY LẠI), K (BẰNG NHAU), L (chọn bên PHẢI)</p>
     </div>
-</div>
-
-<div class="sorter">
-        <img src="src/assets/defaultL.jpg" class="left sort image">
-
-        <div class="starting start button">Nhấn để bắt đầu</div>
-        <div class="starting load button">Load <span></span></div>
-
-        <div class="loading button"><div></div><span>Loading...</span></div>
-
-        <div class="sorting tie button">Bằng nhau</div>
-        <div class="sorting undo button">Quay lại</div>
-
-        <!-- Khung chứa 3 nút kết quả nằm giữa 2 ảnh -->
-        <div class="finished-buttons-wrap">
-            <div class="finished getimg button">Lưu ảnh</div>
-            <div class="finished list button">Lưu văn bản</div>
-            <div class="finished retry button">Thử lại</div>
-        </div>
-
-        <div class="finished save button">Generate Result URL</div>
-
-        <img src="src/assets/defaultR.jpg" class="right sort image">
-
-        <div class="left sort text"><p></p></div>
-        <div class="right sort text"><p></p></div>
-    </div>
-
-    <div class="options"></div>
-    <div class="image selector">Display Images on Result: </div>
-    <div class="time taken"></div>
-    <div class="results"></div>
-
-    <div class="info">
-        <a href="https://github.com/execfera/charasort/" target="_blank" rel="noopener noreferrer">Source</a> | <a href="https://open.spotify.com/artist/0V2DfUrZvBuUReS1LFo5ZI" target="_blank" rel="noopener noreferrer">Ngọt (Spotify)</a> | <a href="https://open.spotify.com/artist/1oD9fKbb7qQ2nhn9JJC24F" target="_blank" rel="noopener noreferrer">Thắng (Spotify)</a>
-
-        <br><br>
-
-        <p>Cập nhật gần nhất: 23/07/2026</p>
-        <p>Phần mềm sử dụng: Github, Gemini (hỗ trợ tạo và sửa code)</p>
-        <p>Phím tắt máy tính: H (chọn bên TRÁI), J (QUAY LẠI), K (BẰNG NHAU), L (chọn bên PHẢI)</p>
-    </div>
-</div>
+  </div>
 </body>
 
 </html>
