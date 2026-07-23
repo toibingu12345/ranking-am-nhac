@@ -61,7 +61,7 @@ function init() {
   document.querySelector('.sorting.tie.button').addEventListener('click', () => pick('tie'));
   document.querySelector('.sorting.undo.button').addEventListener('click', undo);
   
-  // Nút kết quả
+  // Các sự kiện cho 3 nút kết quả
   document.querySelector('.finished.getimg').addEventListener('click', generateImage);
   document.querySelector('.finished.list').addEventListener('click', generateTextList);
   document.querySelector('.finished.retry').addEventListener('click', () => location.reload());
@@ -78,10 +78,11 @@ function init() {
     }
   });
 
-  // Khởi tạo ban đầu
+  // Ban đầu: chỉ hiện nút "Nhấn để bắt đầu", ẩn các nút khác
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.finished-container').style.display = 'none';
   document.querySelector('.starting.start.button').style.display = 'flex';
+  document.querySelector('.options').style.display = 'grid';
 
   setLatestDataset();
 }
@@ -141,7 +142,7 @@ function start() {
   });
 
   if (characterDataToSort.length < 2) {
-    alert('Cannot sort with less than two characters. Please reselect.');
+    alert('Không thể xếp hạng với ít hơn 2 bài hát. Vui lòng tích chọn thêm options.');
     return;
   }
 
@@ -187,6 +188,8 @@ function start() {
   rightInnerIndex = 0;                        
 
   document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
+  
+  // Ẩn nút "Bắt đầu", chuẩn bị hiện nút "Bằng nhau" & "Quay lại"
   document.querySelectorAll('.starting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.loading.button').style.display = 'none';
   
@@ -196,6 +199,8 @@ function start() {
   preloadImages().then(() => {
     loading = false;
     document.querySelector('.loading.button').style.display = 'none';
+    
+    // Đang chơi: Hiện nút "Bằng nhau" và "Quay lại"
     document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'flex');
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
@@ -339,15 +344,20 @@ function progressBar(indicator, percentage) {
 }
 
 function result() {
+  // 1. Ẩn Progress bar
   document.querySelector('.progress').classList.remove('active');
+  
+  // 2. Ẩn nút "Bằng nhau" và "Quay lại"
+  document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
+
+  // 3. Hiển thị 3 nút kết quả xếp dọc chính giữa 2 ảnh
   document.querySelector('.finished-container').style.display = 'flex';
   
   document.querySelector('.time.taken').style.display = 'block';
-  document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
   document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = '');
   document.querySelector('.options').style.display = 'none';
-  document.querySelector('.info').style.display = 'none';
 
+  // Giữ lại ảnh mặc định lúc kết thúc
   document.querySelector('.left.sort.image').src = 'src/assets/defaultL.jpg';
   document.querySelector('.right.sort.image').src = 'src/assets/defaultR.jpg';
 
@@ -412,7 +422,7 @@ function result() {
   resultTable.appendChild(topContainer);
   resultTable.appendChild(subContainer);
 }
-	
+
 function undo() {
   if (timeTaken) { return; }
 
@@ -442,7 +452,7 @@ function generateImage() {
   html2canvas(document.querySelector('.results')).then(canvas => {
     const dataURL = canvas.toDataURL();
     const imgBtn = document.querySelector('.finished.getimg');
-    imgBtn.innerHTML = `<a href="${dataURL}" download="${filename}" style="color:#fff;text-decoration:none;display:block;width:100%;height:100%;line-height:66px;">Tải ảnh về</a>`;
+    imgBtn.innerHTML = `<a href="${dataURL}" download="${filename}" style="color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">Tải ảnh về</a>`;
   });
 }
 
