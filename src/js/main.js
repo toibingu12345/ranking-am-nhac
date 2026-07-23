@@ -1,24 +1,16 @@
 /** @type {CharData} */
-let characterData       = [];   // Initial character data set used.
+let characterData       = [];
 /** @type {CharData} */
-let characterDataToSort = [];   // Character data set after filtering.
+let characterDataToSort = [];
 /** @type {Options} */
-let options             = [];   // Initial option set used.
+let options             = [];
 
-let currentVersion      = '';   // Which version of characterData and options are used.
+let currentVersion      = '';
 
-/** @type {(boolean|boolean[])[]} */
-let optTaken  = [];             // Records which options are set.
-
-/** Save Data. Concatenated into array, joined into string (delimited by '|') and compressed with lz-string. */
 let timestamp = 0;        
 let timeTaken = 0;        
 let choices   = '';       
-let optStr    = '';       
-let suboptStr = '';       
-let timeError = false;    
 
-/** Intermediate sorter data. */
 let sortedIndexList = [];
 let recordDataList  = [];
 let parentIndexList = [];
@@ -32,7 +24,6 @@ let battleNo        = 1;
 let sortedNo        = 0;
 let pointer         = 0;
 
-/** A copy of intermediate sorter data is recorded for undo() purposes. */
 let sortedIndexListPrev = [];
 let recordDataListPrev  = [];
 let parentIndexListPrev = [];
@@ -46,12 +37,10 @@ let battleNoPrev        = 1;
 let sortedNoPrev        = 0;
 let pointerPrev         = 0;
 
-/** Miscellaneous sorter data that doesn't need to be saved for undo(). */
 let finalCharacters = [];
 let loading         = false;
 let totalBattles    = 0;
 
-/** Initialize script. */
 function init() {
   document.querySelector('.starting.start.button').addEventListener('click', start);
 
@@ -61,7 +50,6 @@ function init() {
   document.querySelector('.sorting.tie.button').addEventListener('click', () => pick('tie'));
   document.querySelector('.sorting.undo.button').addEventListener('click', undo);
   
-  // Các sự kiện cho 3 nút kết quả
   document.querySelector('.finished.getimg').addEventListener('click', generateImage);
   document.querySelector('.finished.list').addEventListener('click', generateTextList);
   document.querySelector('.finished.retry').addEventListener('click', () => location.reload());
@@ -78,76 +66,23 @@ function init() {
     }
   });
 
-  // Ban đầu: chỉ hiện nút "Nhấn để bắt đầu", ẩn các nút khác
+  // Ban đầu chỉ hiển thị nút Bắt đầu
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.finished-container').style.display = 'none';
   document.querySelector('.starting.start.button').style.display = 'flex';
-  document.querySelector('.options').style.display = 'grid';
 
   setLatestDataset();
 }
 
-/** Begin sorting. */
 function start() {
   characterDataToSort = characterData.slice(0);
-  optTaken = [];
-
-  options.forEach(opt => {
-    if ('sub' in opt) {
-      if (!document.getElementById(`cbgroup-${opt.key}`).checked) optTaken.push(false);
-      else {
-        const suboptArray = opt.sub.reduce((arr, val, idx) => {
-          arr.push(document.getElementById(`cb-${opt.key}-${idx}`).checked);
-          return arr;
-        }, []);
-        optTaken.push(suboptArray);
-      }
-    } else { optTaken.push(document.getElementById(`cb-${opt.key}`).checked); }
-  });
-
-  optStr    = '';
-  suboptStr = '';
-
-  optStr = optTaken
-    .map(val => !!val)
-    .reduce((str, val) => {
-      str += val ? '1' : '0';
-      return str;
-    }, optStr);
-  optTaken.forEach(val => {
-    if (Array.isArray(val)) {
-      suboptStr += '|';
-      suboptStr += val.reduce((str, val) => {
-        str += val ? '1' : '0';
-        return str;
-      }, '');
-    }
-  });
-
-  options.forEach((opt, index) => {
-    if ('sub' in opt) {
-      if (optTaken[index]) {
-        const subArray = optTaken[index].reduce((subList, subBool, subIndex) => {
-          if (subBool) { subList.push(options[index].sub[subIndex].key); }
-          return subList;
-        }, []);
-        characterDataToSort = characterDataToSort.filter(char => {
-          if (!(opt.key in char.opts)) console.warn(`Warning: ${opt.key} not set for ${char.name}.`);
-          return opt.key in char.opts && char.opts[opt.key].some(key => subArray.includes(key));
-        });
-      }
-    } else if (optTaken[index]) {
-      characterDataToSort = characterDataToSort.filter(char => !char.opts[opt.key]);
-    }
-  });
 
   if (characterDataToSort.length < 2) {
-    alert('Không thể xếp hạng với ít hơn 2 bài hát. Vui lòng tích chọn thêm options.');
+    alert('Không đủ bài hát để xếp hạng!');
     return;
   }
 
   timestamp = timestamp || new Date().getTime();
-  if (new Date(timestamp) < new Date(currentVersion)) { timeError = true; }
   Math.seedrandom(timestamp);
 
   characterDataToSort = characterDataToSort
@@ -187,9 +122,6 @@ function start() {
   leftInnerIndex  = 0;                        
   rightInnerIndex = 0;                        
 
-  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
-  
-  // Ẩn nút "Bắt đầu", chuẩn bị hiện nút "Bằng nhau" & "Quay lại"
   document.querySelectorAll('.starting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.loading.button').style.display = 'none';
   
@@ -200,14 +132,12 @@ function start() {
     loading = false;
     document.querySelector('.loading.button').style.display = 'none';
     
-    // Đang chơi: Hiện nút "Bằng nhau" và "Quay lại"
     document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'flex');
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
   });
 }
 
-/** Displays the current state of the sorter. */
 function display() {
   const percent         = Math.floor(sortedNo * 100 / totalBattles);
   const leftCharIndex   = sortedIndexList[leftIndex][leftInnerIndex];
@@ -315,7 +245,7 @@ function pick(sortType) {
 
   if (leftIndex < 0) {
     timeTaken = timeTaken || new Date().getTime() - timestamp;
-    progressBar(`Battle No. ${battleNo} - Completed!`, 100);
+    progressBar(`Battle No. ${battleNo} - Hoàn thành!`, 100);
     result();
   } else {
     battleNo++;
@@ -344,24 +274,17 @@ function progressBar(indicator, percentage) {
 }
 
 function result() {
-  // 1. Ẩn Progress bar
   document.querySelector('.progress').classList.remove('active');
-  
-  // 2. Ẩn nút "Bằng nhau" và "Quay lại"
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
-
-  // 3. Hiển thị 3 nút kết quả xếp dọc chính giữa 2 ảnh
   document.querySelector('.finished-container').style.display = 'flex';
   
   document.querySelector('.time.taken').style.display = 'block';
   document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = '');
-  document.querySelector('.options').style.display = 'none';
 
-  // Giữ lại ảnh mặc định lúc kết thúc
   document.querySelector('.left.sort.image').src = 'src/assets/defaultL.jpg';
   document.querySelector('.right.sort.image').src = 'src/assets/defaultR.jpg';
 
-  const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}.`;
+  const timeStr = `Thời gian thực hiện: ${msToReadableTime(timeTaken)}.`;
 
   let rankNum     = 1;
   let tiedRankNum = 1;
@@ -444,13 +367,20 @@ function undo() {
   display();
 }
 
+/* Kỹ thuật chụp ảnh loại bỏ màu nền trắng & đè mép */
 function generateImage() {
   const timeFinished = timestamp + timeTaken;
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
   const filename = 'sort-' + (new Date(timeFinished - tzoffset)).toISOString().slice(0, -5).replace('T', '(') + ').png';
 
-  html2canvas(document.querySelector('.results')).then(canvas => {
-    const dataURL = canvas.toDataURL();
+  const targetElem = document.querySelector('#results-container');
+
+  html2canvas(targetElem, {
+    backgroundColor: '#11265b', // Ép màu nền chuẩn xanh đậm
+    useCORS: true,
+    scale: 2 // Tăng độ phân giải sắc nét
+  }).then(canvas => {
+    const dataURL = canvas.toDataURL('image/png');
     const imgBtn = document.querySelector('.finished.getimg');
     imgBtn.innerHTML = `<a href="${dataURL}" download="${filename}" style="color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">Tải ảnh về</a>`;
   });
@@ -479,41 +409,6 @@ function setLatestDataset() {
 
   characterData = dataSet[currentVersion].characterData;
   options = dataSet[currentVersion].options;
-
-  populateOptions();
-}
-
-function populateOptions() {
-  const optList = document.querySelector('.options');
-  const optInsert = (name, id, tooltip, checked = true, disabled = false) => {
-    return `<div><label title="${tooltip?tooltip:name}"><input id="cb-${id}" type="checkbox" ${checked?'checked':''} ${disabled?'disabled':''}> ${name}</label></div>`;
-  };
-  const optInsertLarge = (name, id, tooltip, checked = true) => {
-    return `<div class="large option"><label title="${tooltip?tooltip:name}"><input id="cbgroup-${id}" type="checkbox" ${checked?'checked':''}> ${name}</label></div>`;
-  };
-
-  optList.innerHTML = '';
-
-  options.forEach(opt => {
-    if ('sub' in opt) {
-      optList.insertAdjacentHTML('beforeend', optInsertLarge(opt.name, opt.key, opt.tooltip, opt.checked));
-      opt.sub.forEach((subopt, subindex) => {
-        optList.insertAdjacentHTML('beforeend', optInsert(subopt.name, `${opt.key}-${subindex}`, subopt.tooltip, subopt.checked, opt.checked === false));
-      });
-      optList.insertAdjacentHTML('beforeend', '<hr>');
-
-      const groupbox = document.getElementById(`cbgroup-${opt.key}`);
-
-      groupbox.parentElement.addEventListener('click', () => {
-        opt.sub.forEach((subopt, subindex) => {
-          document.getElementById(`cb-${opt.key}-${subindex}`).disabled = !groupbox.checked;
-          if (groupbox.checked) { document.getElementById(`cb-${opt.key}-${subindex}`).checked = true; }
-        });
-      });
-    } else {
-      optList.insertAdjacentHTML('beforeend', optInsert(opt.name, opt.key, opt.tooltip, opt.checked));
-    }
-  });
 }
 
 function preloadImages() {
@@ -540,24 +435,12 @@ function preloadImages() {
 
 function msToReadableTime (milliseconds) {
   let t = Math.floor(milliseconds/1000);
-  const years = Math.floor(t / 31536000);
-  t = t - (years * 31536000);
-  const months = Math.floor(t / 2592000);
-  t = t - (months * 2592000);
-  const days = Math.floor(t / 86400);
-  t = t - (days * 86400);
-  const hours = Math.floor(t / 3600);
-  t = t - (hours * 3600);
   const minutes = Math.floor(t / 60);
   t = t - (minutes * 60);
   const content = [];
-  if (years) content.push(years + " year" + (years > 1 ? "s" : ""));
-  if (months) content.push(months + " month" + (months > 1 ? "s" : ""));
-  if (days) content.push(days + " day" + (days > 1 ? "s" : ""));
-  if (hours) content.push(hours + " hour"  + (hours > 1 ? "s" : ""));
-  if (minutes) content.push(minutes + " minute" + (minutes > 1 ? "s" : ""));
-  if (t) content.push(t + " second" + (t > 1 ? "s" : ""));
-  return content.slice(0,3).join(', ');
+  if (minutes) content.push(minutes + " phút");
+  if (t) content.push(t + " giây");
+  return content.join(' ');
 }
 
 window.onload = init;
