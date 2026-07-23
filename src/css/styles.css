@@ -6,7 +6,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #11265b;
+  background-color: #11265b !important;
 }
 
 .site-wrapper {
@@ -24,13 +24,23 @@ html, body {
   padding: 20px 10px;
 }
 
-/* --- 1. PROGRESS BAR NẰM TRÊN CÙNG --- */
+/* --- TIÊU ĐỀ BẮT ĐẦU --- */
+.main-title {
+  color: #ffffff !important;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 25px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* --- PROGRESS BAR (ĐÃ XÓA TEXT BATTLE) --- */
 .progress-wrapper {
   width: 100%;
   max-width: 565px;
-  min-height: 55px;
-  margin-bottom: 25px; 
-  display: flex;
+  height: 35px;
+  margin-bottom: 20px; 
   align-items: center;
   justify-content: center;
 }
@@ -48,11 +58,7 @@ html, body {
 }
 
 .progressbattle {
-  display: block;
-  text-align: center;
-  font-size: 0.85em;
-  margin-bottom: 6px;
-  font-weight: 600;
+  display: none !important; /* Xóa hẳn chữ Battle No. */
 }
 
 .progressbar {
@@ -73,6 +79,7 @@ html, body {
   font-size: 0.75em;
   z-index: 2;
   color: #ffffff; 
+  font-weight: 600;
 }
 
 .progressfill {
@@ -82,7 +89,7 @@ html, body {
   background-color: #2b52b3; 
 }
 
-/* --- 2. KHUNG ĐẤU NHẠC --- */
+/* --- KHUNG ĐẤU NHẠC --- */
 .sorter {
   margin: 0 auto;
   display: grid;
@@ -184,27 +191,31 @@ html, body {
 .sorter > .left { grid-column: 1 / 2; }
 .sorter > .right { grid-column: 3 / 4; }
 
-/* --- 3. KHUNG OPTIONS (ẨN CHECKBOX ĐẦU TIÊN) --- */
+/* --- 3 CHECKBOX HIỂN THỊ --- */
 .options {
   margin-top: 25px;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-}
-
-/* CSS ẩn cái checkbox bọc ngoài cùng (cái option box trên cùng) */
-.options > .opt-group:first-child {
-  display: none !important;
+  gap: 20px;
 }
 
 .options label {
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 0.95em;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  color: #ffffff;
+}
+
+.options input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #4ebbe4;
 }
 
 .time.taken {
@@ -214,17 +225,17 @@ html, body {
   display: none;
 }
 
-/* --- 4. BẢNG KẾT QUẢ VÀ TẢI ÁNH --- */
+/* --- BẢNG KẾT QUẢ & MỞ RỘNG KHUNG TÊN BÀI HÁT --- */
 .results {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   width: 100% !important;
-  max-width: 950px !important;
+  max-width: 1150px !important;
   margin: 20px auto !important;
-  padding: 30px !important;
+  padding: 25px !important;
   background-color: #11265b !important;
-  border-radius: 16px;
+  box-sizing: border-box !important;
 }
 
 .top5-container {
@@ -242,7 +253,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 110px;
+  width: 120px;
 }
 
 .top-badge {
@@ -259,8 +270,8 @@ html, body {
 }
 
 .top-img-wrap {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 12px;
   overflow: hidden;
   background-color: #09132e;
@@ -274,16 +285,18 @@ html, body {
 
 .top-name {
   margin-top: 8px;
-  font-size: 0.8em !important;
+  font-size: 0.85em !important;
   font-weight: 600;
   color: #ffffff !important;
   text-align: center;
   line-height: 1.3 !important;
+  word-break: break-word;
 }
 
+/* Mở rộng ô bài hát to ra (210px) để không bao giờ bị cắt chữ */
 .sub-results-container {
   display: grid !important;
-  grid-template-columns: repeat(5, minmax(150px, 1fr)) !important;
+  grid-template-columns: repeat(5, minmax(210px, 1fr)) !important; 
   gap: 12px 15px !important;
   width: 100% !important;
 }
@@ -291,10 +304,11 @@ html, body {
 .sub-item {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 6px 10px;
-  border-radius: 20px;
+  gap: 10px !important;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: 12px; 
+  min-height: 48px;
 }
 
 .sub-badge {
@@ -302,8 +316,8 @@ html, body {
   color: #ffffff !important;
   font-weight: 700;
   font-size: 0.75em;
-  min-width: 24px;
-  height: 24px;
+  min-width: 26px;
+  height: 26px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -312,15 +326,15 @@ html, body {
 }
 
 .sub-name {
-  font-size: 0.8em !important;
+  font-size: 0.82em !important;
   font-weight: 500;
   color: #ffffff !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal !important;
+  word-break: break-word !important;
+  line-height: 1.3 !important;
 }
 
-/* --- 5. FOOTER TÍT DƯỚI CÙNG --- */
+/* --- FOOTER --- */
 footer.info {
   flex-shrink: 0;
   width: 100%;
