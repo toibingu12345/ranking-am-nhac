@@ -36,7 +36,7 @@ body {
   overflow: hidden;
   display: flex;
   align-items: center;
-  background-color: #1e293b; 
+  background-color: #58678c; 
 }
 
 .progresstext {
@@ -58,7 +58,7 @@ body {
   width: 0%;
   border-radius: 8px;
   box-sizing: border-box;
-  background-color: #4ade80; 
+  background-color: #58678c; 
 }
 
 /* --- 2. BẢNG BÌNH CHỌN (KHUNG CỐ ĐỊNH CHỐNG GIẬT / LỆCH ẢNH) --- */
@@ -96,7 +96,7 @@ body {
 }
 
 .button:hover {
-  background-color: #3b4d61; 
+  background-color: #8893ad; 
 }
 
 /* Ban đầu ẩn 2 nút bình chọn */
@@ -334,9 +334,9 @@ a {
 }
 
 a:hover {
-  color: #93c5fd; 
+  color: #58678c; 
 }
 
 a:visited {
-  color: #c084fc; 
+  color: #58678c; 
 }
