@@ -66,7 +66,6 @@ function init() {
     }
   });
 
-  // Ban đầu chỉ hiển thị nút Bắt đầu
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.finished-container').style.display = 'none';
   document.querySelector('.starting.start.button').style.display = 'flex';
@@ -75,12 +74,24 @@ function init() {
 }
 
 function start() {
-  characterDataToSort = characterData.slice(0);
+  // Lọc dữ liệu dựa theo các checkbox con đã chọn
+  characterDataToSort = characterData.filter(char => {
+    if (char.opts && char.opts.group) {
+      return char.opts.group.some(optId => {
+        const checkbox = document.getElementById(`opt-${optId}`);
+        return checkbox ? checkbox.checked : true;
+      });
+    }
+    return true;
+  });
 
   if (characterDataToSort.length < 2) {
-    alert('Không đủ bài hát để xếp hạng!');
+    alert('Không đủ bài hát để xếp hạng! Vui lòng tích chọn thêm mục.');
     return;
   }
+
+  // Ẩn khung Tùy chọn khi bắt đầu đấu
+  document.querySelector('.options').style.display = 'none';
 
   timestamp = timestamp || new Date().getTime();
   Math.seedrandom(timestamp);
@@ -367,7 +378,6 @@ function undo() {
   display();
 }
 
-/* Kỹ thuật chụp ảnh loại bỏ màu nền trắng & đè mép */
 function generateImage() {
   const timeFinished = timestamp + timeTaken;
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
@@ -376,9 +386,9 @@ function generateImage() {
   const targetElem = document.querySelector('#results-container');
 
   html2canvas(targetElem, {
-    backgroundColor: '#11265b', // Ép màu nền chuẩn xanh đậm
+    backgroundColor: '#11265b',
     useCORS: true,
-    scale: 2 // Tăng độ phân giải sắc nét
+    scale: 2
   }).then(canvas => {
     const dataURL = canvas.toDataURL('image/png');
     const imgBtn = document.querySelector('.finished.getimg');
@@ -409,6 +419,26 @@ function setLatestDataset() {
 
   characterData = dataSet[currentVersion].characterData;
   options = dataSet[currentVersion].options;
+
+  // Render danh sách Checkbox
+  const optionsElem = document.querySelector('.options');
+  optionsElem.innerHTML = '';
+
+  options.forEach(optGroup => {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'opt-group';
+
+    optGroup.sub.forEach(opt => {
+      const label = document.createElement('label');
+      label.innerHTML = `
+        <input type="checkbox" id="opt-${opt.id}" ${opt.checked !== false ? 'checked' : ''}>
+        <span>${opt.name}</span>
+      `;
+      groupDiv.appendChild(label);
+    });
+
+    optionsElem.appendChild(groupDiv);
+  });
 }
 
 function preloadImages() {
