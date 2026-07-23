@@ -346,11 +346,20 @@ function result() {
   document.querySelector('.options').style.display = 'none';
   document.querySelector('.info').style.display = 'none';
 
-  const header = '<div class="result head"><div class="left">Order</div><div class="right">Name</div></div>';
   const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}.`;
+  
+  // HTML mẫu cho mỗi thẻ kết quả (Gồm badge xếp hạng, ảnh và tên)
   const imgRes = (char, num) => {
-    return `<div class="result image"><div class="left"><span>${num}</span></div><div class="right"><img src="${char.img}"><div><span>${char.name}</span></div></div></div>`;
-  }
+    return `
+      <div class="result-card">
+        <div class="rank-badge">#${num}</div>
+        <div class="card-img-wrap">
+          <img src="${char.img}" alt="${char.name}">
+        </div>
+        <div class="card-name">${char.name}</div>
+      </div>
+    `;
+  };
 
   let rankNum       = 1;
   let tiedRankNum   = 1;
@@ -359,12 +368,13 @@ function result() {
   const resultTable = document.querySelector('.results');
   const timeElem = document.querySelector('.time.taken');
 
-  resultTable.innerHTML = header;
+  resultTable.innerHTML = ''; // Xóa sạch nội dung cũ
   timeElem.innerHTML = timeStr;
 
   characterDataToSort.forEach((val, idx) => {
     const characterIndex = finalSortedIndexes[idx];
     const character = characterDataToSort[characterIndex];
+    
     resultTable.insertAdjacentHTML('beforeend', imgRes(character, rankNum));
     finalCharacters.push({ rank: rankNum, name: character.name });
 
