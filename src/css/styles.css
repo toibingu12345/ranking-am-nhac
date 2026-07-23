@@ -387,3 +387,75 @@ a:hover {
 a:visited {
   color: #58678c; 
 }
+
+/* --- ĐẶT NÚT FINISHED VÀO VỊ TRÍ CỦA NÚT GAME (CỘT GIỮA) --- */
+.finished.getimg.button {
+  grid-column: 2 / 3 !important;
+  grid-row: 1 !important;
+  align-self: start !important;
+  height: 100px !important;
+  margin: 0 !important;
+}
+
+.finished.list.button {
+  grid-column: 2 / 3 !important;
+  grid-row: 1 !important;
+  align-self: end !important;
+  height: 100px !important;
+  margin: 0 !important;
+}
+
+/* Kiểu dáng nút sau khi kết thúc */
+.finished.button {
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  width: 100px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 0.95em;
+  font-weight: 600;
+  background-color: #09132e !important; 
+  color: #ffffff !important;
+  line-height: 1.3 !important;
+}
+
+.finished.button:hover {
+  background-color: #0e1e49 !important;
+}
+
+/* Nút download & reset bên trong nút Generate Image */
+.finished.getimg.button a {
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+/* --- TỐI ƯU KHUNG RESULTS ĐỂ HTML2CANVAS CHỤP KHÔNG BỊ CẮT VÀ TRẮNG --- */
+.results {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 1000px !important;
+  margin: 30px auto !important;
+  padding: 30px 20px !important; /* Tạo lề đệm xung quanh để không bị xén Top 5 */
+  background-color: #11265b !important; /* Cố định màu nền tối cho ảnh xuất ra */
+  border-radius: 16px;
+  box-sizing: border-box !important;
+}
+
+/* Đảm bảo Top 5 có khoảng trống phía trên cho Badge #1..#5 */
+.top5-container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  width: 100% !important;
+  margin-top: 15px !important; /* Chống bị xén badge trên cùng */
+  margin-bottom: 35px !important;
+  flex-wrap: wrap !important;
+}
