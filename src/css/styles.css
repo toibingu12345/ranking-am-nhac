@@ -1,7 +1,15 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
-}
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #11265b;
+    color: #ffffff;
+    font-size: 17px;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
 
 .container {
   display: flex;
