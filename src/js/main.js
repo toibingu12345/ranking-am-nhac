@@ -358,7 +358,7 @@ function result() {
   resultTable.innerHTML = ''; 
   timeElem.innerHTML = timeStr;
 
-  // Tạo 2 container riêng
+  // Tạo 2 container riêng biệt
   const topContainer = document.createElement('div');
   topContainer.className = 'top5-container';
 
@@ -369,7 +369,7 @@ function result() {
     const characterIndex = finalSortedIndexes[idx];
     const character = characterDataToSort[characterIndex];
     
-    // Top 5 đầu tiên sẽ có hình ảnh + badge cam
+    // ĐÚNG TOP 5 ĐẦU TIÊN MỚI CÓ ẢNH
     if (idx < 5) {
       const topHtml = `
         <div class="top-card">
@@ -382,12 +382,12 @@ function result() {
       `;
       topContainer.insertAdjacentHTML('beforeend', topHtml);
     } 
-    // Từ thứ 6 trở đi chỉ hiện chữ + badge tròn xanh
+    // TỪ HẠNG 6 TRỞ ĐI CHỈ TẠO CHỮ VÀ BADGE TRÒN (KHÔNG CÓ ẢNH)
     else {
       const subHtml = `
         <div class="sub-item">
           <span class="sub-badge">${rankNum}</span>
-          <span class="sub-name">${character.name}</span>
+          <span class="sub-name" title="${character.name}">${character.name}</span>
         </div>
       `;
       subContainer.insertAdjacentHTML('beforeend', subHtml);
