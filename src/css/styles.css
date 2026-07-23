@@ -342,68 +342,112 @@ a:visited {
   color: #58678c; 
 }
 
-/* --- Cấu hình Khung danh sách Kết quả --- */
 .results {
   display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  gap: 20px 15px !important;
-  width: 90% !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
   max-width: 1000px !important;
   margin: 30px auto !important;
-  height: auto !important;
-  max-height: none !important;
 }
 
-/* --- Thẻ Card chứa từng nhân vật/bài hát --- */
-.result-card {
+/* --- 1. PHẦN TOP 5 NẰM NGANG --- */
+.top5-container {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 18px !important;
+  width: 100% !important;
+  margin-bottom: 35px !important;
+  flex-wrap: wrap !important;
+}
+
+.top-card {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 110px; /* Độ rộng mỗi ô */
-  text-align: center;
+  width: 105px;
 }
 
-/* --- Badge hiển thị số thứ tự Hạng (#1, #2, ...) --- */
-.rank-badge {
+.top-badge {
   position: absolute;
-  top: -10px;
-  left: -8px;
-  background-color: #e3a869; /* Màu vàng/cam nhạt giống ảnh mẫu */
-  color: #111111 !important;
+  top: -12px;
+  left: -6px;
+  background-color: #d9a05b; /* Màu vàng cam giống ảnh mẫu */
+  color: #ffffff !important;
   font-weight: 700;
-  font-size: 0.8em;
-  padding: 3px 8px;
+  font-size: 0.75em;
+  padding: 2px 7px;
   border-radius: 12px;
   z-index: 3;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
-/* --- Vùng chứa ảnh đại diện --- */
-.card-img-wrap {
-  width: 100px;
-  height: 100px;
+.top-img-wrap {
+  width: 95px;
+  height: 95px;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   background-color: #09132e;
 }
 
-.card-img-wrap img {
+.top-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* --- Tên bài hát/nhân vật bên dưới --- */
-.card-name {
-  margin-top: 8px;
+.top-name {
+  margin-top: 6px;
   font-size: 0.8em !important;
   font-weight: 600;
   color: #ffffff !important;
+  text-align: center;
   line-height: 1.2 !important;
   word-break: break-word;
-  max-width: 100px;
+}
+
+/* --- 2. PHẦN DANH SÁCH CHỮ BÊN DƯỚI (XẾP CỘT) --- */
+.sub-results-container {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: wrap !important;
+  max-height: 280px !important; /* Độ cao cột, thừa sẽ tự nhảy sang cột mới bên phải */
+  column-gap: 30px !important;
+  row-gap: 10px !important;
+  justify-content: flex-start !important;
+  align-content: center !important;
+  width: 100% !important;
+}
+
+.sub-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+}
+
+/* Badge số thứ tự tròn màu xanh nước biển */
+.sub-badge {
+  background-color: #5bb3e8; /* Xanh ngọc/xanh dương nhẹ */
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.75em;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sub-name {
+  font-size: 0.82em !important;
+  color: #ffffff !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
 }
