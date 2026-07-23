@@ -9,7 +9,6 @@ html, body {
   background-color: #11265b;
 }
 
-/* Kỹ thuật Sticky Footer giúp thông tin luôn nằm tít cuối trang */
 .site-wrapper {
   min-height: 100vh;
   display: flex;
@@ -25,7 +24,7 @@ html, body {
   padding: 20px 10px;
 }
 
-/* --- 1. PROGRESS BAR (ĐƯA HẲN LÊN TRÊN VÀ CÓ KHOẢNG CÁCH RÕ RÀNG) --- */
+/* --- 1. PROGRESS BAR NẰM TRÊN CÙNG --- */
 .progress-wrapper {
   width: 100%;
   max-width: 565px;
@@ -83,7 +82,7 @@ html, body {
   background-color: #2b52b3; 
 }
 
-/* --- 2. KHUNG ĐẤU NHẠC CÂN BẰNG --- */
+/* --- 2. KHUNG ĐẤU NHẠC --- */
 .sorter {
   margin: 0 auto;
   display: grid;
@@ -111,26 +110,15 @@ html, body {
   color: #ffffff; 
 }
 
-.button:hover {
-  background-color: #0e1e49; 
-}
+.button:hover { background-color: #0e1e49; }
 
 .starting.start.button {
   grid-row: 1;
   height: 220px;
 }
 
-.sorting.tie.button { 
-  grid-row: 1; 
-  align-self: start; 
-  height: 100px; 
-}
-
-.sorting.undo.button { 
-  grid-row: 1; 
-  align-self: end; 
-  height: 100px; 
-}
+.sorting.tie.button { grid-row: 1; align-self: start; height: 100px; }
+.sorting.undo.button { grid-row: 1; align-self: end; height: 100px; }
 
 .finished-container {
   grid-column: 2 / 3;
@@ -159,13 +147,9 @@ html, body {
   transition: background-color 0.2s ease;
 }
 
-.btn-action:hover {
-  background-color: #0e1e49;
-}
+.btn-action:hover { background-color: #0e1e49; }
 
-.save.button, .loading.button, .starting.load.button { 
-  display: none !important; 
-}
+.save.button, .loading.button, .starting.load.button { display: none !important; }
 
 .sorter > .image {
   width: 220px;
@@ -200,6 +184,29 @@ html, body {
 .sorter > .left { grid-column: 1 / 2; }
 .sorter > .right { grid-column: 3 / 4; }
 
+/* --- 3. KHUNG OPTIONS (ẨN CHECKBOX ĐẦU TIÊN) --- */
+.options {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* CSS ẩn cái checkbox bọc ngoài cùng (cái option box trên cùng) */
+.options > .opt-group:first-child {
+  display: none !important;
+}
+
+.options label {
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .time.taken {
   margin-top: 15px;
   text-align: center;
@@ -207,7 +214,7 @@ html, body {
   display: none;
 }
 
-/* --- 3. BẢNG KẾT QUẢ VÀ FIX LỖI XUẤT ÁNH --- */
+/* --- 4. BẢNG KẾT QUẢ VÀ TẢI ÁNH --- */
 .results {
   display: flex !important;
   flex-direction: column !important;
@@ -216,7 +223,7 @@ html, body {
   max-width: 950px !important;
   margin: 20px auto !important;
   padding: 30px !important;
-  background-color: #11265b !important; /* Đảm bảo màu nền trùng khớp */
+  background-color: #11265b !important;
   border-radius: 16px;
 }
 
@@ -313,7 +320,7 @@ html, body {
   text-overflow: ellipsis;
 }
 
-/* --- 4. FOOTER CỐ ĐỊNH Ở TÍT CUỐI TRANG --- */
+/* --- 5. FOOTER TÍT DƯỚI CÙNG --- */
 footer.info {
   flex-shrink: 0;
   width: 100%;
@@ -328,7 +335,6 @@ footer.info {
   font-size: 0.9em;
 }
 
-/* Tối ưu hóa cho màn hình điện thoại */
 @media (max-width: 600px) {
   .sorter {
     grid-template-columns: 140px 80px 140px;
