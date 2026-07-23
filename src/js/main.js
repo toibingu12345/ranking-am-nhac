@@ -11,12 +11,12 @@ let currentVersion      = '';   // Which version of characterData and options ar
 let optTaken  = [];             // Records which options are set.
 
 /** Save Data. Concatenated into array, joined into string (delimited by '|') and compressed with lz-string. */
-let timestamp = 0;        // savedata[0]      (Unix time when sorter was started, used as initial PRNG seed and in dataset selection)
-let timeTaken = 0;        // savedata[1]      (Number of ms elapsed when sorter ends, used as end-of-sort flag and in filename generation)
-let choices   = '';       // savedata[2]      (String of '0', '1' and '2' that records what sorter choices are made)
-let optStr    = '';       // savedata[3]      (String of '0' and '1' that denotes top-level option selection)
-let suboptStr = '';       // savedata[4...n]  (String of '0' and '1' that denotes nested option selection, separated by '|')
-let timeError = false;    // Shifts entire savedata array to the right by 1 and adds an empty element at savedata[0] if true.
+let timestamp = 0;        
+let timeTaken = 0;        
+let choices   = '';       
+let optStr    = '';       
+let suboptStr = '';       
+let timeError = false;    
 
 /** Intermediate sorter data. */
 let sortedIndexList = [];
@@ -54,7 +54,6 @@ let totalBattles    = 0;
 /** Initialize script. */
 function init() {
 
-  /** Define button behavior. */
   document.querySelector('.starting.start.button').addEventListener('click', start);
 
   document.querySelector('.left.sort.image').addEventListener('click', () => pick('left'));
@@ -66,9 +65,7 @@ function init() {
   document.querySelector('.finished.getimg.button').addEventListener('click', generateImage);
   document.querySelector('.finished.list.button').addEventListener('click', generateTextList);
 
-  /** Define keyboard controls (up/down/left/right vimlike k/j/h/l). */
   document.addEventListener('keypress', (ev) => {
-    /** If sorting is in progress. */
     if (timestamp && !timeTaken && !loading && choices.length === battleNo - 1) {
       switch(ev.key) {
         case 'h': case 'ArrowLeft':  pick('left'); break;
@@ -80,19 +77,16 @@ function init() {
     }
   });
 
-  // YÊU CẦU 1: Vừa vào trang thì chỉ xuất hiện nút "nhấn để bắt đầu"
+  // Ban đầu chỉ hiển thị nút Bắt đầu
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
-  document.querySelector('.starting.start.button').style.display = 'block';
+  document.querySelector('.starting.start.button').style.display = 'flex';
 
   setLatestDataset();
 }
 
 /** Begin sorting. */
 function start() {
-  /** Copy data into sorting array to filter. */
   characterDataToSort = characterData.slice(0);
-
-  /** Check selected options and convert to boolean array form. */
   optTaken = [];
 
   options.forEach(opt => {
@@ -108,7 +102,6 @@ function start() {
     } else { optTaken.push(document.getElementById(`cb-${opt.key}`).checked); }
   });
 
-  /** Convert boolean array form to string form. */
   optStr    = '';
   suboptStr = '';
 
@@ -128,7 +121,6 @@ function start() {
     }
   });
 
-  /** Filter out deselected nested criteria and remove selected criteria. */
   options.forEach((opt, index) => {
     if ('sub' in opt) {
       if (optTaken[index]) {
@@ -151,7 +143,6 @@ function start() {
     return;
   }
 
-  /** Shuffle character array with timestamp seed. */
   timestamp = timestamp || new Date().getTime();
   if (new Date(timestamp) < new Date(currentVersion)) { timeError = true; }
   Math.seedrandom(timestamp);
@@ -193,20 +184,16 @@ function start() {
   leftInnerIndex  = 0;                        
   rightInnerIndex = 0;                        
 
-  /** Disable all checkboxes and hide/show appropriate parts while we preload the images. */
   document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
   document.querySelectorAll('.starting.button').forEach(el => el.style.display = 'none');
-  document.querySelector('.loading.button').style.display = 'block';
+  document.querySelector('.loading.button').style.display = 'none';
   document.querySelector('.progress').style.display = 'block';
   loading = true;
 
   preloadImages().then(() => {
     loading = false;
     document.querySelector('.loading.button').style.display = 'none';
-    
-    // Sửa 'block' thành 'flex' tại dòng này:
     document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'flex');
-    
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
   });
@@ -220,8 +207,8 @@ function display() {
   const leftChar        = characterDataToSort[leftCharIndex];
   const rightChar       = characterDataToSort[rightCharIndex];
 
-const charNameDisp = name => {
-    // Trả về thẳng tên nguyên bản, không dùng reduceTextWidth để tránh bị biến thành ".."
+  // Trả về thẳng tên nguyên bản, không bị cắt dấu ..
+  const charNameDisp = name => {
     return `<p>${name}</p>`;
   };
 
@@ -233,7 +220,6 @@ const charNameDisp = name => {
   document.querySelector('.left.sort.text').innerHTML = charNameDisp(leftChar.name);
   document.querySelector('.right.sort.text').innerHTML = charNameDisp(rightChar.name);
 
-  /** Autopick if choice has been given. */
   if (choices.length !== battleNo - 1) {
     switch (Number(choices[battleNo - 1])) {
       case 0: pick('left'); break;
@@ -244,16 +230,9 @@ const charNameDisp = name => {
   }
 }
 
-/**
- * Sort between two character choices or tie.
- * 
- * @param {'left'|'right'|'tie'} sortType
- */
 function pick(sortType) {
   if ((timeTaken && choices.length === battleNo - 1) || loading) { return; }
-  
-  // YÊU CẦU 3: Bấm vào ảnh khi chưa bấm "nhấn để bắt đầu" sẽ không tự bắt đầu
-  else if (!timestamp) { return; }
+  else if (!timestamp) { return; } // Chưa bấm bắt đầu thì click ảnh không tự chạy
 
   sortedIndexListPrev = sortedIndexList.slice(0);
   recordDataListPrev  = recordDataList.slice(0);
@@ -285,7 +264,6 @@ function pick(sortType) {
       }
       break;
     }
-
     case 'tie': {
       if (choices.length === battleNo - 1) { choices += '2'; }
       recordData('left');
@@ -332,9 +310,7 @@ function pick(sortType) {
 
   if (leftIndex < 0) {
     timeTaken = timeTaken || new Date().getTime() - timestamp;
-
     progressBar(`Battle No. ${battleNo} - Completed!`, 100);
-
     result();
   } else {
     battleNo++;
@@ -342,11 +318,6 @@ function pick(sortType) {
   }
 }
 
-/**
- * Records data in recordDataList.
- * 
- * @param {'left'|'right'} sortType Record from the left or the right character array.
- */
 function recordData(sortType) {
   if (sortType === 'left') {
     recordDataList[pointer] = sortedIndexList[leftIndex][leftInnerIndex];
@@ -360,21 +331,12 @@ function recordData(sortType) {
   sortedNo++;
 }
 
-/**
- * Modifies the progress bar.
- * 
- * @param {string} indicator
- * @param {number} percentage
- */
 function progressBar(indicator, percentage) {
   document.querySelector('.progressbattle').innerHTML = indicator;
   document.querySelector('.progressfill').style.width = `${percentage}%`;
   document.querySelector('.progresstext').innerHTML = `${percentage}%`;
 }
 
-/**
- * Shows the result of the sorter.
- */
 function result() {
   document.querySelectorAll('.finished.button').forEach(el => el.style.display = 'block');
   document.querySelector('.time.taken').style.display = 'block';
@@ -387,9 +349,7 @@ function result() {
   const header = '<div class="result head"><div class="left">Order</div><div class="right">Name</div></div>';
   const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}.`;
   const imgRes = (char, num) => {
-    const charName = reduceTextWidth(char.name, 'Arial 12px', 160);
-    const charTooltip = char.name !== charName ? char.name : '';
-    return `<div class="result image"><div class="left"><span>${num}</span></div><div class="right"><img src="${char.img}"><div><span title="${charTooltip}">${charName}</span></div></div></div>`;
+    return `<div class="result image"><div class="left"><span>${num}</span></div><div class="right"><img src="${char.img}"><div><span>${char.name}</span></div></div></div>`;
   }
 
   let rankNum       = 1;
@@ -419,7 +379,6 @@ function result() {
   });
 }
 
-/** Undo previous choice. */
 function undo() {
   if (timeTaken) { return; }
 
@@ -474,7 +433,6 @@ function generateTextList() {
   oWindow.document.write(data);
 }
 
-/** Retrieve latest character data and options from dataset. */
 function setLatestDataset() {
   timestamp = 0;
   timeTaken = 0;
@@ -493,7 +451,6 @@ function setLatestDataset() {
   populateOptions();
 }
 
-/** Populate option list. */
 function populateOptions() {
   const optList = document.querySelector('.options');
   const optInsert = (name, id, tooltip, checked = true, disabled = false) => {
@@ -569,21 +526,6 @@ function msToReadableTime (milliseconds) {
 	if (minutes) content.push(minutes + " minute" + (minutes > 1 ? "s" : ""));
 	if (t) content.push(t + " second" + (t > 1 ? "s" : ""));
   return content.slice(0,3).join(', ');
-}
-
-function reduceTextWidth(text, font, width) {
-  const canvas = reduceTextWidth.canvas || (reduceTextWidth.canvas = document.createElement("canvas"));
-  const context = canvas.getContext("2d");
-  context.font = font;
-  if (context.measureText(text).width < width * 0.8) {
-    return text;
-  } else {
-    let reducedText = text;
-    while (context.measureText(reducedText).width + context.measureText('..').width > width * 0.8) {
-      reducedText = reducedText.slice(0, -1);
-    }
-    return reducedText + '..';
-  }
 }
 
 window.onload = init;
