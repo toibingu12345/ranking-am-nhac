@@ -10,18 +10,20 @@ body {
   margin-top: 1em;
 }
 
+/* --- 1. THANH TIẾN TRÌNH (GIỮ CỐ ĐỊNH VỊ TRÍ) --- */
 .progress {
-  margin: 1.5em auto 1.2em auto !important;
+  margin: 1.5em auto 1.5em auto !important; /* Tạo khoảng cách cố định trên/dưới */
   width: 500px;
   height: 26px;
-  display: none;
+  visibility: hidden; /* Giữ sẵn khoảng trống từ đầu, nhưng tạm thời ẩn nội dung */
+  display: block !important; /* Ép luôn hiển thị khung để giữ vị trí */
 }
 
-/* Kích hoạt khi chạy sorter */
+/* Khi game chạy, JS kích hoạt hiển thị thì hiện thanh lên */
 .progress[style*="display: block"], 
 .progress[style*="display: flex"],
 .progress.active {
-  display: block !important;
+  visibility: visible !important; /* Hiện ra ngay tại chỗ đã chừa sẵn */
 }
 
 .progressbar {
@@ -57,7 +59,7 @@ body {
   width: 0%;
   border-radius: 8px;
   box-sizing: border-box;
-  background-color: #58678c; 
+  background-color: #0e1e49; 
 }
 
 /* --- 2. BẢNG BÌNH CHỌN (KHUNG CỐ ĐỊNH CHỐNG GIẬT / LỆCH ẢNH) --- */
