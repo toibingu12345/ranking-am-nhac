@@ -61,18 +61,18 @@ function init() {
   document.querySelector('.sorting.tie.button').addEventListener('click', () => pick('tie'));
   document.querySelector('.sorting.undo.button').addEventListener('click', undo);
   
-  // Nút kết quả mới
+  // Nút kết quả
   document.querySelector('.finished.getimg').addEventListener('click', generateImage);
   document.querySelector('.finished.list').addEventListener('click', generateTextList);
   document.querySelector('.finished.retry').addEventListener('click', () => location.reload());
 
-  document.addEventListener('keypress', (ev) => {
+  document.addEventListener('keydown', (ev) => {
     if (timestamp && !timeTaken && !loading && choices.length === battleNo - 1) {
-      switch(ev.key) {
-        case 'h': case 'ArrowLeft':  pick('left'); break;
-        case 'l': case 'ArrowRight': pick('right'); break;
-        case 'k': case 'ArrowUp':    pick('tie'); break;
-        case 'j': case 'ArrowDown':  undo(); break;
+      switch(ev.key.toLowerCase()) {
+        case 'h': case 'arrowleft':  pick('left'); break;
+        case 'l': case 'arrowright': pick('right'); break;
+        case 'k': case 'arrowup':    pick('tie'); break;
+        case 'j': case 'arrowdown':  undo(); break;
         default: break;
       }
     }
@@ -186,7 +186,7 @@ function start() {
   leftInnerIndex  = 0;                        
   rightInnerIndex = 0;                        
 
-document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
   document.querySelectorAll('.starting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.loading.button').style.display = 'none';
   
@@ -200,6 +200,7 @@ document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = tr
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
   });
+}
 
 /** Displays the current state of the sorter. */
 function display() {
@@ -209,10 +210,7 @@ function display() {
   const leftChar        = characterDataToSort[leftCharIndex];
   const rightChar       = characterDataToSort[rightCharIndex];
 
-  // Trả về thẳng tên nguyên bản, không bị cắt dấu ..
-  const charNameDisp = name => {
-    return `<p>${name}</p>`;
-  };
+  const charNameDisp = name => `<p>${name}</p>`;
 
   progressBar(`Battle No. ${battleNo}`, percent);
 
@@ -234,7 +232,7 @@ function display() {
 
 function pick(sortType) {
   if ((timeTaken && choices.length === battleNo - 1) || loading) { return; }
-  else if (!timestamp) { return; } // Chưa bấm bắt đầu thì click ảnh không tự chạy
+  else if (!timestamp) { return; }
 
   sortedIndexListPrev = sortedIndexList.slice(0);
   recordDataListPrev  = recordDataList.slice(0);
@@ -261,7 +259,7 @@ function pick(sortType) {
     case 'right': {
       if (choices.length === battleNo - 1) { choices += '1'; }
       recordData('right');
-      while (tiedDataList[recordDataList [pointer - 1]] != -1) {
+      while (tiedDataList[recordDataList[pointer - 1]] != -1) {
         recordData('right');
       }
       break;
@@ -274,7 +272,7 @@ function pick(sortType) {
       }
       tiedDataList[recordDataList[pointer - 1]] = sortedIndexList[rightIndex][rightInnerIndex];
       recordData('right');
-      while (tiedDataList[recordDataList [pointer - 1]] != -1) {
+      while (tiedDataList[recordDataList[pointer - 1]] != -1) {
         recordData('right');
       }
       break;
@@ -334,25 +332,22 @@ function recordData(sortType) {
 }
 
 function progressBar(indicator, percentage) {
-  document.querySelector('.progressbattle').innerHTML = indicator;
+  const battleElem = document.querySelector('.progressbattle');
+  if (battleElem) battleElem.innerHTML = indicator;
   document.querySelector('.progressfill').style.width = `${percentage}%`;
   document.querySelector('.progresstext').innerHTML = `${percentage}%`;
 }
 
 function result() {
-  // Ẩn Progress bar (xóa class active)
   document.querySelector('.progress').classList.remove('active');
-
-  // Hiện khung 3 nút giữa
   document.querySelector('.finished-container').style.display = 'flex';
   
   document.querySelector('.time.taken').style.display = 'block';
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = ''); // Xóa tên nhạc
+  document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = '');
   document.querySelector('.options').style.display = 'none';
   document.querySelector('.info').style.display = 'none';
 
-  // Trả về ảnh mặc định gốc
   document.querySelector('.left.sort.image').src = 'src/assets/defaultL.jpg';
   document.querySelector('.right.sort.image').src = 'src/assets/defaultR.jpg';
 
@@ -373,6 +368,8 @@ function result() {
 
   const subContainer = document.createElement('div');
   subContainer.className = 'sub-results-container';
+
+  finalCharacters = [];
 
   characterDataToSort.forEach((val, idx) => {
     const characterIndex = finalSortedIndexes[idx];
@@ -445,9 +442,7 @@ function generateImage() {
   html2canvas(document.querySelector('.results')).then(canvas => {
     const dataURL = canvas.toDataURL();
     const imgBtn = document.querySelector('.finished.getimg');
-    
-    // Đổi nút thành link tải
-    imgBtn.innerHTML = `<a href="${dataURL}" download="${filename}" style="color:#fff;text-decoration:none;">Tải ảnh về</a>`;
+    imgBtn.innerHTML = `<a href="${dataURL}" download="${filename}" style="color:#fff;text-decoration:none;display:block;width:100%;height:100%;line-height:66px;">Tải ảnh về</a>`;
   });
 }
 
@@ -546,12 +541,12 @@ function msToReadableTime (milliseconds) {
   const minutes = Math.floor(t / 60);
   t = t - (minutes * 60);
   const content = [];
-	if (years) content.push(years + " year" + (years > 1 ? "s" : ""));
-	if (months) content.push(months + " month" + (months > 1 ? "s" : ""));
-	if (days) content.push(days + " day" + (days > 1 ? "s" : ""));
-	if (hours) content.push(hours + " hour"  + (hours > 1 ? "s" : ""));
-	if (minutes) content.push(minutes + " minute" + (minutes > 1 ? "s" : ""));
-	if (t) content.push(t + " second" + (t > 1 ? "s" : ""));
+  if (years) content.push(years + " year" + (years > 1 ? "s" : ""));
+  if (months) content.push(months + " month" + (months > 1 ? "s" : ""));
+  if (days) content.push(days + " day" + (days > 1 ? "s" : ""));
+  if (hours) content.push(hours + " hour"  + (hours > 1 ? "s" : ""));
+  if (minutes) content.push(minutes + " minute" + (minutes > 1 ? "s" : ""));
+  if (t) content.push(t + " second" + (t > 1 ? "s" : ""));
   return content.slice(0,3).join(', ');
 }
 
