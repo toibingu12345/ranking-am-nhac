@@ -63,7 +63,7 @@ body {
   background-color: #0e1e49; 
 }
 
-/* --- 2. BẢNG BÌNH CHỌN --- */
+/* --- 2. BẢNG BÌNH CHỌN (KHUNG GIỮA NẰM GIỮA 2 ẢNH 220PX) --- */
 .sorter {
   margin: 0 auto;
   display: grid;
@@ -74,7 +74,7 @@ body {
   align-items: start;
 }
 
-/* --- 3. NÚT BẤM VÀ KHUNG KẾT QUẢ GIỮA --- */
+/* Style nút bấm cơ bản */
 .button {
   border: none;
   border-radius: 8px;
@@ -100,11 +100,13 @@ body {
   background-color: #0e1e49; 
 }
 
+/* Nút Nhấn Để Bắt Đầu (Lúc chưa bắt đầu) */
 .starting.start.button {
   grid-row: 1;
   height: 220px;
 }
 
+/* Nút trong lúc chơi (Bằng nhau / Quay lại) */
 .sorting.tie.button { 
   grid-row: 1; 
   align-self: start; 
@@ -117,7 +119,7 @@ body {
   height: 100px; 
 }
 
-/* Khung chứa 3 nút kết quả xếp dọc vừa khít 220px giữa 2 ảnh */
+/* Khung 3 nút Kết Quả (Lưu ảnh / Lưu văn bản / Thử lại) nằm dọc giữa 2 ảnh */
 .finished-container {
   grid-column: 2 / 3;
   grid-row: 1;
@@ -130,7 +132,7 @@ body {
 
 .btn-action {
   width: 100%;
-  height: 66px;
+  height: 66px; /* 3 nút chia đều 220px cao khăng khít */
   border: none;
   border-radius: 8px;
   background-color: #09132e;
@@ -154,7 +156,7 @@ body {
   display: none !important; 
 }
 
-/* --- 4. ẢNH VÀ TÊN BÀI HÁT --- */
+/* --- 3. ẢNH VÀ TÊN BÀI HÁT --- */
 .sorter > .image {
   width: 220px;
   height: 220px;
@@ -195,7 +197,7 @@ body {
 .sorter > .left { grid-column: 1 / 2; border: none; }
 .sorter > .right { grid-column: 3 / 4; border: none; }
 
-/* --- 5. TÙY CHỌN (CHECKBOXES) --- */
+/* --- 4. OPTIONS BOX (DANH MỤC LỰA CHỌN) --- */
 .options {
   margin: 25px auto 0 auto;
   display: grid;
@@ -252,7 +254,7 @@ label:hover { color: #ffffff; }
   font-size: 0.75em;
 }
 
-/* --- 6. KHUNG KẾT QUẢ KHI XONG --- */
+/* --- 5. BẢNG KẾT QUẢ SẮP XẾP --- */
 .results {
   display: flex !important;
   flex-direction: column !important;
