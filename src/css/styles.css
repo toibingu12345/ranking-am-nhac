@@ -10,20 +10,22 @@ body {
   margin-top: 1em;
 }
 
-/* --- 1. THANH TIẾN TRÌNH (GIỮ CỐ ĐỊNH VỊ TRÍ) --- */
 .progress {
-  margin: 1.5em auto 1.5em auto !important; /* Tạo khoảng cách cố định trên/dưới */
+  margin: 10px auto 25px auto !important; /* Tạo khoảng cách 25px ngăn cách hẳn với ảnh */
   width: 500px;
   height: 26px;
-  visibility: hidden; /* Giữ sẵn khoảng trống từ đầu, nhưng tạm thời ẩn nội dung */
-  display: block !important; /* Ép luôn hiển thị khung để giữ vị trí */
+  opacity: 0; /* Giữ sẵn vị trí trống ngay từ đầu, chỉ làm mờ đi */
+  pointer-events: none;
+  transition: opacity 0.3s ease; /* Hiệu ứng hiện mượt mà */
 }
 
-/* Khi game chạy, JS kích hoạt hiển thị thì hiện thanh lên */
+/* Khi bấm bắt đầu, JS thêm style display thì chỉ cần tăng opacity lên */
 .progress[style*="display: block"], 
 .progress[style*="display: flex"],
 .progress.active {
-  visibility: visible !important; /* Hiện ra ngay tại chỗ đã chừa sẵn */
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto;
 }
 
 .progressbar {
@@ -64,7 +66,7 @@ body {
 
 /* --- 2. BẢNG BÌNH CHỌN (KHUNG CỐ ĐỊNH CHỐNG GIẬT / LỆCH ẢNH) --- */
 .sorter {
-  margin: 0px auto;
+  margin: 0 auto; /* Đã được thanh progress ở trên căn khoảng cách chuẩn */
   display: grid;
   grid-template-columns: 220px 100px 220px;
   grid-template-rows: 220px auto; 
@@ -179,7 +181,7 @@ body {
 }
 
 .options {
-  margin: 1.2em auto 0 auto; /* Đổi 3.5em thành 1.2em để kéo checkbox lên cao */
+  margin: 25px auto 0 auto; /* Đẩy checkbox cách tên bài hát đúng 25px (đều với khoảng cách ở trên) */
   display: grid;
   text-align: left;
   grid-template-columns: repeat(3, auto);
