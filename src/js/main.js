@@ -53,7 +53,6 @@ let totalBattles    = 0;
 
 /** Initialize script. */
 function init() {
-
   document.querySelector('.starting.start.button').addEventListener('click', start);
 
   document.querySelector('.left.sort.image').addEventListener('click', () => pick('left'));
@@ -62,10 +61,10 @@ function init() {
   document.querySelector('.sorting.tie.button').addEventListener('click', () => pick('tie'));
   document.querySelector('.sorting.undo.button').addEventListener('click', undo);
   
-  document.querySelector('.finished.getimg.button').addEventListener('click', generateImage);
-  document.querySelector('.finished.list.button').addEventListener('click', generateTextList);
-  // Sự kiện nút Thử lại
-  document.querySelector('.finished.retry.button').addEventListener('click', () => location.reload());
+  // Nút kết quả mới
+  document.querySelector('.finished.getimg').addEventListener('click', generateImage);
+  document.querySelector('.finished.list').addEventListener('click', generateTextList);
+  document.querySelector('.finished.retry').addEventListener('click', () => location.reload());
 
   document.addEventListener('keypress', (ev) => {
     if (timestamp && !timeTaken && !loading && choices.length === battleNo - 1) {
@@ -79,15 +78,9 @@ function init() {
     }
   });
 
-  // Ban đầu chỉ hiển thị nút Bắt đầu
+  // Khởi tạo ban đầu
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
-  document.querySelector('.starting.start.button').style.display = 'flex';
-
-  setLatestDataset();
-}
-
-  // Ban đầu chỉ hiển thị nút Bắt đầu
-  document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
+  document.querySelector('.finished-container').style.display = 'none';
   document.querySelector('.starting.start.button').style.display = 'flex';
 
   setLatestDataset();
@@ -193,10 +186,11 @@ function start() {
   leftInnerIndex  = 0;                        
   rightInnerIndex = 0;                        
 
-  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
+document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
   document.querySelectorAll('.starting.button').forEach(el => el.style.display = 'none');
   document.querySelector('.loading.button').style.display = 'none';
-  document.querySelector('.progress').style.display = 'block';
+  
+  document.querySelector('.progress').classList.add('active');
   loading = true;
 
   preloadImages().then(() => {
@@ -206,7 +200,6 @@ function start() {
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
   });
-}
 
 /** Displays the current state of the sorter. */
 function display() {
