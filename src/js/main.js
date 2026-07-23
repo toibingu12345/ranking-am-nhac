@@ -340,22 +340,19 @@ function progressBar(indicator, percentage) {
 }
 
 function result() {
-  // Ẩn progress bar hoàn toàn khi kết thúc
-  document.querySelector('.progress').style.display = 'none';
+  // Ẩn Progress bar (xóa class active)
+  document.querySelector('.progress').classList.remove('active');
 
-  // Hiển thị khung 3 nút kết quả
-  const buttonsWrap = document.querySelector('.finished-buttons-wrap');
-  if (buttonsWrap) buttonsWrap.style.display = 'flex';
+  // Hiện khung 3 nút giữa
+  document.querySelector('.finished-container').style.display = 'flex';
   
-  document.querySelectorAll('.finished.button').forEach(el => el.style.display = 'flex');
   document.querySelector('.time.taken').style.display = 'block';
-  
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = ''); // Xoá tên nhạc 2 bên
+  document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = ''); // Xóa tên nhạc
   document.querySelector('.options').style.display = 'none';
   document.querySelector('.info').style.display = 'none';
 
-  // Trả 2 ảnh 2 bên về Default L & R gốc
+  // Trả về ảnh mặc định gốc
   document.querySelector('.left.sort.image').src = 'src/assets/defaultL.jpg';
   document.querySelector('.right.sort.image').src = 'src/assets/defaultR.jpg';
 
@@ -418,7 +415,7 @@ function result() {
   resultTable.appendChild(topContainer);
   resultTable.appendChild(subContainer);
 }
-
+	
 function undo() {
   if (timeTaken) { return; }
 
@@ -445,40 +442,12 @@ function generateImage() {
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
   const filename = 'sort-' + (new Date(timeFinished - tzoffset)).toISOString().slice(0, -5).replace('T', '(') + ').png';
 
-  const targetElem = document.querySelector('.results');
-
-  // Đặt thông số html2canvas chuẩn để fix nền trắng và xén Top 5
-  html2canvas(targetElem, {
-    backgroundColor: '#11265b',
-    scale: 2, // Tăng độ phân giải nét cao
-    useCORS: true,
-    scrollX: 0,
-    scrollY: -window.scrollY // Sửa lỗi trượt tọa độ khi chụp
-  }).then(canvas => {
-    const dataURL = canvas.toDataURL('image/png');
-    const imgButton = document.querySelector('.finished.getimg.button');
+  html2canvas(document.querySelector('.results')).then(canvas => {
+    const dataURL = canvas.toDataURL();
+    const imgBtn = document.querySelector('.finished.getimg');
     
-    imgButton.innerHTML = '';
-    
-    const downloadLink = document.createElement('a');
-    downloadLink.href = dataURL;
-    downloadLink.download = filename;
-    downloadLink.innerText = 'Download Image';
-    
-    const resetButton = document.createElement('div');
-    resetButton.innerText = 'Reset';
-    resetButton.style.marginTop = '6px';
-    resetButton.style.fontSize = '0.8em';
-    resetButton.style.opacity = '0.8';
-    
-    imgButton.appendChild(downloadLink);
-    imgButton.appendChild(resetButton);
-
-    resetButton.addEventListener('click', (event) => {
-      event.stopPropagation();
-      imgButton.innerHTML = 'Generate Image';
-      imgButton.addEventListener('click', generateImage, { once: true });
-    });
+    // Đổi nút thành link tải
+    imgBtn.innerHTML = `<a href="${dataURL}" download="${filename}" style="color:#fff;text-decoration:none;">Tải ảnh về</a>`;
   });
 }
 
