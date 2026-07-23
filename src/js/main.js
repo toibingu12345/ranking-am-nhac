@@ -220,10 +220,9 @@ function display() {
   const leftChar        = characterDataToSort[leftCharIndex];
   const rightChar       = characterDataToSort[rightCharIndex];
 
-  const charNameDisp = name => {
-    const charName = reduceTextWidth(name, 'Arial 12.8px', 220);
-    const charTooltip = name !== charName ? name : '';
-    return `<p title="${charTooltip}">${charName}</p>`;
+const charNameDisp = name => {
+    // Trả về thẳng tên nguyên bản, không dùng reduceTextWidth để tránh bị biến thành ".."
+    return `<p>${name}</p>`;
   };
 
   progressBar(`Battle No. ${battleNo}`, percent);
