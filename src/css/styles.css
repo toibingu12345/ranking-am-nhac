@@ -79,6 +79,8 @@ body {
 }
 
 /* NÚT BẤM CÂN BẰNG */
+/* --- BẢNG BÌNH CHỌN (SORTER) & NÚT BẤM --- */
+
 .button {
   border: none;
   border-radius: 8px;
@@ -88,52 +90,48 @@ body {
   padding: 0;
   grid-column: 2 / 3;
   cursor: pointer;
-  display: flex !important;
+  display: flex; /* Đã BỎ !important ở đây để JS có thể ẩn/hiện nút */
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
   box-sizing: border-box;
   font-size: 1.05em;
   font-weight: 500;
-  /* MÀU SẮC: Nền & Chữ nút bấm */
   background-color: #2b3a4a; 
   color: #ffffff; 
 }
 
 .button:hover {
-  /* MÀU SẮC: Nền nút khi hover */
   background-color: #3b4d61; 
 }
 
-/* 
-  FIX: Xử lý nút bấm theo trạng thái (chỉ xuất hiện nút cần thiết):
-  1. Ban đầu (.starting): Hiện nút "Nhấn để bắt đầu" chiếm trọn chiều cao (row 1-7).
-  2. Khi chạy (.sorting): Ẩn nút Bắt đầu, Nút 1 (Bằng nhau) gộp hàng trên, Nút 2 (Quay lại) gộp hàng dưới.
-*/
+/* Ban đầu ẩn 2 nút "Bằng nhau" và "Quay lại" */
+.sorting.button {
+  display: none;
+}
+
+/* Định vị nút "Nhấn để bắt đầu" chiếm trọn chiều cao ở giữa */
 .starting.start.button {
-  grid-row: 1 / 7 !important;
-  height: 100%;
+  grid-row: 1 / 7;
 }
 
-.starting.load.button {
-  display: none !important;
-}
-
-.sorting.button:nth-of-type(1) {
-  grid-row: 1 / 4 !important;
+/* Định vị 2 nút khi bắt đầu xếp hạng */
+.sorting.tie.button {
+  grid-row: 1 / 4;
   margin-bottom: 10px;
 }
 
-.sorting.button:nth-of-type(2) {
-  grid-row: 4 / 7 !important;
+.sorting.undo.button {
+  grid-row: 4 / 7;
   margin-top: 10px;
 }
 
+/* Các nút chức năng khác ẩn ban đầu */
 .save.button, 
-.button:nth-child(3),
 .finished.button,
-.loading.button {
-  display: none !important;
+.loading.button,
+.starting.load.button {
+  display: none;
 }
 
 .sorter > .image {
