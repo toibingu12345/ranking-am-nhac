@@ -60,7 +60,7 @@
 
 <body>
   <div class="container">
-    <!-- Progress bar chiếm riêng 1 hàng cố định chiều cao -->
+    <!-- Progress bar cố định vị trí -->
     <div class="progress-wrapper">
       <div class="progress">
         <span class="progressbattle"></span>
@@ -71,19 +71,20 @@
       </div>
     </div>
 
-    <!-- Khung sorter cố định -->
+    <!-- Khung đấu nhạc chính -->
     <div class="sorter">
       <img src="src/assets/defaultL.jpg" class="left sort image" alt="Left Option">
 
-      <!-- Các nút trạng thái lúc bắt đầu & đang sắp xếp -->
+      <!-- 1. Trạng thái VỪA VÀO -->
       <div class="starting start button">Nhấn để bắt đầu</div>
       <div class="starting load button">Load <span></span></div>
       <div class="loading button"><div></div><span>Loading...</span></div>
 
+      <!-- 2. Trạng thái TRONG LÚC CHƠI -->
       <div class="sorting tie button">Bằng nhau</div>
       <div class="sorting undo button">Quay lại</div>
 
-      <!-- Khung 3 nút kết quả nằm gọn chính giữa 2 ảnh -->
+      <!-- 3. Trạng thái KẾT THÚC (3 nút xếp dọc chính giữa 2 ảnh) -->
       <div class="finished-container">
         <button class="btn-action finished getimg">Lưu ảnh</button>
         <button class="btn-action finished list">Lưu văn bản</button>
@@ -96,7 +97,9 @@
       <div class="right sort text"><p></p></div>
     </div>
 
+    <!-- Khung Options Box (Lựa chọn danh mục / album) -->
     <div class="options"></div>
+
     <div class="image selector">Display Images on Result: </div>
     <div class="time taken"></div>
     <div class="results"></div>
