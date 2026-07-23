@@ -204,11 +204,9 @@ function start() {
     loading = false;
     document.querySelector('.loading.button').style.display = 'none';
     
-    // YÊU CẦU 2: Đã bấm Bắt đầu thì chỉ xuất hiện nút "Bằng nhau" và "Quay lại"
-    document.querySelector('.starting.start.button').style.display = 'none';
-    document.querySelector('.sorting.tie.button').style.display = 'block';
-    document.querySelector('.sorting.undo.button').style.display = 'block';
-
+    // Sửa 'block' thành 'flex' tại dòng này:
+    document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'flex');
+    
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
   });
