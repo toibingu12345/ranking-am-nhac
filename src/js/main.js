@@ -80,6 +80,10 @@ function init() {
     }
   });
 
+  // YÊU CẦU 1: Vừa vào trang thì chỉ xuất hiện nút "nhấn để bắt đầu"
+  document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
+  document.querySelector('.starting.start.button').style.display = 'block';
+
   setLatestDataset();
 }
 
@@ -157,54 +161,37 @@ function start() {
     .sort((a,b) => a[0] - b[0])
     .map(a => a[1]);
 
-  /**
-   * tiedDataList will keep a record of indexes on which characters are equal (i.e. tied) 
-   * to another one. recordDataList will have an interim list of sorted elements during
-   * the mergesort process.
-   */
-
   recordDataList  = characterDataToSort.map(() => 0);
   tiedDataList    = characterDataToSort.map(() => -1);
-
-  /** 
-   * Put a list of indexes that we'll be sorting into sortedIndexList. These will refer back
-   * to characterDataToSort.
-   * 
-   * Begin splitting each element into little arrays and spread them out over sortedIndexList
-   * increasing its length until it become arrays of length 1 and you can't split it anymore. 
-   * 
-   * parentIndexList indicates each element's parent (i.e. where it was split from), except 
-   * for the first element, which has no parent.
-   */
 
   sortedIndexList[0] = characterDataToSort.map((val, idx) => idx);
   parentIndexList[0] = -1;
 
-  let midpoint = 0;   // Indicates where to split the array.
-  let marker   = 1;   // Indicates where to place our newly split array.
+  let midpoint = 0;   
+  let marker   = 1;   
 
   for (let i = 0; i < sortedIndexList.length; i++) {
     if (sortedIndexList[i].length > 1) {
       let parent = sortedIndexList[i];
       midpoint = Math.ceil(parent.length / 2);
 
-      sortedIndexList[marker] = parent.slice(0, midpoint);              // Split the array in half, and put the left half into the marked index.
-      totalBattles += sortedIndexList[marker].length;                   // The result's length will add to our total number of comparisons.
-      parentIndexList[marker] = i;                                      // Record where it came from.
-      marker++;                                                         // Increment the marker to put the right half into.
+      sortedIndexList[marker] = parent.slice(0, midpoint);              
+      totalBattles += sortedIndexList[marker].length;                   
+      parentIndexList[marker] = i;                                      
+      marker++;                                                         
 
-      sortedIndexList[marker] = parent.slice(midpoint, parent.length);  // Put the right half next to its left half.
-      totalBattles += sortedIndexList[marker].length;                   // The result's length will add to our total number of comparisons.
-      parentIndexList[marker] = i;                                      // Record where it came from.
-      marker++;                                                         // Rinse and repeat, until we get arrays of length 1. This is initialization of merge sort.
+      sortedIndexList[marker] = parent.slice(midpoint, parent.length);  
+      totalBattles += sortedIndexList[marker].length;                   
+      parentIndexList[marker] = i;                                      
+      marker++;                                                         
     }
   }
 
-  leftIndex   = sortedIndexList.length - 2;    // Start with the second last value and...
-  rightIndex  = sortedIndexList.length - 1;    // the last value in the sorted list and work our way down to index 0.
+  leftIndex   = sortedIndexList.length - 2;    
+  rightIndex  = sortedIndexList.length - 1;    
 
-  leftInnerIndex  = 0;                        // Inner indexes, because we'll be comparing the left array
-  rightInnerIndex = 0;                        // to the right array, in order to merge them into one sorted array.
+  leftInnerIndex  = 0;                        
+  rightInnerIndex = 0;                        
 
   /** Disable all checkboxes and hide/show appropriate parts while we preload the images. */
   document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = true);
@@ -216,7 +203,12 @@ function start() {
   preloadImages().then(() => {
     loading = false;
     document.querySelector('.loading.button').style.display = 'none';
-    document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'block');
+    
+    // YÊU CẦU 2: Đã bấm Bắt đầu thì chỉ xuất hiện nút "Bằng nhau" và "Quay lại"
+    document.querySelector('.starting.start.button').style.display = 'none';
+    document.querySelector('.sorting.tie.button').style.display = 'block';
+    document.querySelector('.sorting.undo.button').style.display = 'block';
+
     document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'block');
     display();
   });
@@ -262,7 +254,9 @@ function display() {
  */
 function pick(sortType) {
   if ((timeTaken && choices.length === battleNo - 1) || loading) { return; }
-  else if (!timestamp) { return start(); }
+  
+  // YÊU CẦU 3: Bấm vào ảnh khi chưa bấm "nhấn để bắt đầu" sẽ không tự bắt đầu
+  else if (!timestamp) { return; }
 
   sortedIndexListPrev = sortedIndexList.slice(0);
   recordDataListPrev  = recordDataList.slice(0);
@@ -277,13 +271,6 @@ function pick(sortType) {
   sortedNoPrev        = sortedNo;
   pointerPrev         = pointer;
 
-  /** 
-   * For picking 'left' or 'right':
-   * 
-   * Input the selected character's index into recordDataList. Increment the pointer of
-   * recordDataList. Then, check if there are any ties with this character, and keep
-   * incrementing until we find no more ties. 
-   */
   switch (sortType) {
     case 'left': {
       if (choices.length === battleNo - 1) { choices += '0'; }
@@ -302,13 +289,6 @@ function pick(sortType) {
       break;
     }
 
-  /** 
-   * For picking 'tie' (i.e. heretics):
-   * 
-   * Proceed as if we picked the 'left' character. Then, we record the right character's
-   * index value into the list of ties (at the left character's index) and then proceed
-   * as if we picked the 'right' character.
-   */
     case 'tie': {
       if (choices.length === battleNo - 1) { choices += '2'; }
       recordData('left');
@@ -325,10 +305,6 @@ function pick(sortType) {
     default: return;
   }
 
-  /**
-   * Once we reach the limit of the 'right' character list, we 
-   * insert all of the 'left' characters into the record, or vice versa.
-   */
   const leftListLen = sortedIndexList[leftIndex].length;
   const rightListLen = sortedIndexList[rightIndex].length;
 
@@ -342,12 +318,6 @@ function pick(sortType) {
     }
   }
 
-  /**
-   * Once we reach the end of both 'left' and 'right' character lists, we can remove 
-   * the arrays from the initial mergesort array, since they are now recorded. This
-   * record is a sorted version of both lists, so we can replace their original 
-   * (unsorted) parent with a sorted version. Purge the record afterwards.
-   */
   if (leftInnerIndex === leftListLen && rightInnerIndex === rightListLen) {
     for (let i = 0; i < leftListLen + rightListLen; i++) {
       sortedIndexList[parentIndexList[leftIndex]][i] = recordDataList[i];
@@ -363,11 +333,6 @@ function pick(sortType) {
     pointer = 0;
   }
 
-  /**
-   * If, after shifting the 'left' index on the sorted list, we reach past the beginning
-   * of the sorted array, that means the entire array is now sorted. The original unsorted
-   * array in index 0 is now replaced with a sorted version, and we will now output this.
-   */
   if (leftIndex < 0) {
     timeTaken = timeTaken || new Date().getTime() - timestamp;
 
@@ -448,10 +413,10 @@ function result() {
 
     if (idx < characterDataToSort.length - 1) {
       if (tiedDataList[characterIndex] === finalSortedIndexes[idx + 1]) {
-        tiedRankNum++;            // Indicates how many people are tied at the same rank.
+        tiedRankNum++;            
       } else {
-        rankNum += tiedRankNum;   // Add it to the actual ranking, then reset it.
-        tiedRankNum = 1;          // The default value is 1, so it increments as normal if no ties.
+        rankNum += tiedRankNum;   
+        tiedRankNum = 1;          
       }
     }
   });
@@ -514,7 +479,6 @@ function generateTextList() {
 
 /** Retrieve latest character data and options from dataset. */
 function setLatestDataset() {
-  /** Set some defaults. */
   timestamp = 0;
   timeTaken = 0;
   choices   = '';
@@ -542,10 +506,8 @@ function populateOptions() {
     return `<div class="large option"><label title="${tooltip?tooltip:name}"><input id="cbgroup-${id}" type="checkbox" ${checked?'checked':''}> ${name}</label></div>`;
   };
 
-  /** Clear out any previous options. */
   optList.innerHTML = '';
 
-  /** Insert sorter options and set grouped option behavior. */
   options.forEach(opt => {
     if ('sub' in opt) {
       optList.insertAdjacentHTML('beforeend', optInsertLarge(opt.name, opt.key, opt.tooltip, opt.checked));
@@ -568,9 +530,6 @@ function populateOptions() {
   });
 }
 
-/** 
- * Preloads images in the filtered character data and converts to base64 representation.
-*/
 function preloadImages() {
   const totalLength = characterDataToSort.length;
   let imagesLoaded = 0;
@@ -593,11 +552,6 @@ function preloadImages() {
   }));
 }
 
-/**
- * Returns a readable time string from milliseconds.
- * 
- * @param {number} milliseconds
- */
 function msToReadableTime (milliseconds) {
   let t = Math.floor(milliseconds/1000);
   const years = Math.floor(t / 31536000);
@@ -620,13 +574,6 @@ function msToReadableTime (milliseconds) {
   return content.slice(0,3).join(', ');
 }
 
-/**
- * Reduces text to a certain rendered width.
- *
- * @param {string} text Text to reduce.
- * @param {string} font Font applied to text. Example "12px Arial".
- * @param {number} width Width of desired width in px.
- */
 function reduceTextWidth(text, font, width) {
   const canvas = reduceTextWidth.canvas || (reduceTextWidth.canvas = document.createElement("canvas"));
   const context = canvas.getContext("2d");
