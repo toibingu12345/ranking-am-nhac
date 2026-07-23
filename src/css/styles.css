@@ -242,106 +242,6 @@ label:hover {
   font-size: 0.75em;
 }
 
-.results {
-  font-size: 0.75em;
-  display: flex;
-  align-content: flex-start;
-  width: 80%;
-  margin: 2em auto;
-}
-
-@media all and (min-width: 600px) {
-  .results {
-    flex-flow: column wrap;
-    max-height: calc(5 * (175px + 2px) + 1 * (15px + 2px));
-  }
-}
-
-@media all and (max-width: 600px) {
-  .results {
-    flex-flow: column nowrap;
-  }
-}
-
-.result {
-  height: 15px;
-  margin-bottom: -1px;
-  display: grid;
-  width: 211px;
-  grid-template-columns: repeat(2, 1fr);
-  border: 1px solid #000;
-  margin-right: 5px;
-}
-
-.result.image {
-  height: 175px;
-}
-
-.result.image img {
-  height: 160px;
-}
-
-.result.spacer {
-  height: 1px;
-  background-color: #000;
-}
-
-.result.head {
-  background-color: #000;
-  color: #FFF;
-}
-
-.result > .left {
-  width: 35px;
-  padding: 1px 3px 1px 0.5em;
-  grid-column: 1 / 2;
-  text-align: right;
-}
-
-.result.image .left {
-  position: relative;
-}
-
-.result.image > .left span {
-  position: absolute;
-  top: 50%;
-  right: 3px;
-  margin-top: -0.375em;
-}
-
-.result > .right {
-  width: 160px;
-  padding: 1px 0em 1px 0em;
-  grid-column: 2 / 3;
-  border-left: 1px solid #000;
-  text-align: center;
-}
-
-.info {
-  margin: 0.5em auto 2em auto;
-  display: block;
-  text-align: center;
-  font-size: 0.85em;
-  width: 80%;
-  line-height: 1.5em;
-  color: #ffffff; 
-}
-
-a {
-  color: #58678c; 
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover {
-  color: #58678c; 
-}
-
-a:visited {
-  color: #58678c; 
-}
-
 /* --- BỐ CỤC KHUNG KẾT QUẢ TỔNG --- */
 .results {
   display: flex !important;
@@ -461,4 +361,29 @@ a:visited {
   .sub-results-container {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
   }
+}
+
+.info {
+  margin: 0.5em auto 2em auto;
+  display: block;
+  text-align: center;
+  font-size: 0.85em;
+  width: 80%;
+  line-height: 1.5em;
+  color: #ffffff; 
+}
+
+a {
+  color: #58678c; 
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #58678c; 
+}
+
+a:visited {
+  color: #58678c; 
 }
