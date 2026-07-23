@@ -64,6 +64,8 @@ function init() {
   
   document.querySelector('.finished.getimg.button').addEventListener('click', generateImage);
   document.querySelector('.finished.list.button').addEventListener('click', generateTextList);
+  // Sự kiện nút Thử lại
+  document.querySelector('.finished.retry.button').addEventListener('click', () => location.reload());
 
   document.addEventListener('keypress', (ev) => {
     if (timestamp && !timeTaken && !loading && choices.length === battleNo - 1) {
@@ -76,6 +78,13 @@ function init() {
       }
     }
   });
+
+  // Ban đầu chỉ hiển thị nút Bắt đầu
+  document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
+  document.querySelector('.starting.start.button').style.display = 'flex';
+
+  setLatestDataset();
+}
 
   // Ban đầu chỉ hiển thị nút Bắt đầu
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
@@ -338,13 +347,24 @@ function progressBar(indicator, percentage) {
 }
 
 function result() {
-  document.querySelectorAll('.finished.button').forEach(el => el.style.display = 'block');
+  // Ẩn progress bar hoàn toàn khi kết thúc
+  document.querySelector('.progress').style.display = 'none';
+
+  // Hiển thị khung 3 nút kết quả
+  const buttonsWrap = document.querySelector('.finished-buttons-wrap');
+  if (buttonsWrap) buttonsWrap.style.display = 'flex';
+  
+  document.querySelectorAll('.finished.button').forEach(el => el.style.display = 'flex');
   document.querySelector('.time.taken').style.display = 'block';
   
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.sort.text').forEach(el => el.innerHTML = ''); // Xoá tên nhạc 2 bên
   document.querySelector('.options').style.display = 'none';
   document.querySelector('.info').style.display = 'none';
+
+  // Trả 2 ảnh 2 bên về Default L & R gốc
+  document.querySelector('.left.sort.image').src = 'src/assets/defaultL.jpg';
+  document.querySelector('.right.sort.image').src = 'src/assets/defaultR.jpg';
 
   const timeStr = `This sorter was completed on ${new Date(timestamp + timeTaken).toString()} and took ${msToReadableTime(timeTaken)}.`;
 
@@ -358,7 +378,6 @@ function result() {
   resultTable.innerHTML = ''; 
   timeElem.innerHTML = timeStr;
 
-  // Tạo 2 container riêng biệt
   const topContainer = document.createElement('div');
   topContainer.className = 'top5-container';
 
@@ -369,7 +388,6 @@ function result() {
     const characterIndex = finalSortedIndexes[idx];
     const character = characterDataToSort[characterIndex];
     
-    // ĐÚNG TOP 5 ĐẦU TIÊN MỚI CÓ ẢNH
     if (idx < 5) {
       const topHtml = `
         <div class="top-card">
@@ -382,7 +400,6 @@ function result() {
       `;
       topContainer.insertAdjacentHTML('beforeend', topHtml);
     } 
-    // TỪ HẠNG 6 TRỞ ĐI CHỈ TẠO CHỮ VÀ BADGE TRÒN (KHÔNG CÓ ẢNH)
     else {
       const subHtml = `
         <div class="sub-item">
